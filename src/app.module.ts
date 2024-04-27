@@ -10,6 +10,7 @@ import { Bag } from './entities/Bag';
 import { Item } from './entities/Items';
 import { LootTable } from './entities/LootTable';
 import { Stat } from './entities/Stat';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { Stat } from './entities/Stat';
       }),
     }),
     TypeOrmModule.forFeature([User, Bag, Item, Equipment, Character, LootTable, Stat]),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
