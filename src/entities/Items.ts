@@ -1,53 +1,60 @@
 import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    OneToOne,
-    JoinColumn
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { LootTable } from './LootTable';
 import { Bag } from './Bag';
 
 @Entity('items')
 export class Item {
-    @PrimaryGeneratedColumn()
-    item_id: number;
+  @PrimaryGeneratedColumn()
+  item_id: number;
 
-    @OneToOne(() => LootTable)
-    @JoinColumn({ name: 'loot_id' })
-    loot_id: LootTable;
+  @OneToOne(() => LootTable)
+  @JoinColumn({ name: 'loot_id' })
+  loot_id: LootTable;
 
-    @OneToOne(() => Bag)
-    @JoinColumn({ name: 'bag_id' })
-    bag_id: Bag;
+  @OneToOne(() => Bag)
+  @JoinColumn({ name: 'bag_id' })
+  bag_id: Bag;
 
-    @Column()
-    level: number;
+  @Column()
+  level: number;
 
-    @Column({ nullable: true })
-    strength: number;
+  @Column('enum', { enum: ['common', 'uncommun', 'rare', 'epic', 'legendary'] })
+  rarity: string;
 
-    @Column({ nullable: true })
-    intelligence: number;
+  @Column({ nullable: true })
+  strength: number;
 
-    @Column({ nullable: true })
-    speed: number;
+  @Column({ nullable: true })
+  intelligence: number;
 
-    @Column({ nullable: true })
-    charisma: number;
+  @Column({ nullable: true })
+  speed: number;
 
-    @Column({ nullable: true })
-    health: number;
+  @Column({ nullable: true })
+  charisma: number;
 
-    @Column({ nullable: true })
-    luck: number;
+  @Column({ nullable: true })
+  health: number;
 
-    @Column()
-    charm: boolean;
+  @Column({ nullable: true })
+  luck: number;
 
-    @Column({ type: 'enum', enum: ['xp_boost', 'gold_boost', 'looting_boost', 'first_attack_boost'], nullable: true })
-    charm_type: string;
+  @Column()
+  charm: boolean;
 
-    @Column({ nullable: true })
-    charm_value: number;
+  @Column({
+    type: 'enum',
+    enum: ['xp_boost', 'gold_boost', 'looting_boost', 'first_attack_boost'],
+    nullable: true,
+  })
+  charm_type: string;
+
+  @Column({ nullable: true })
+  charm_value: number;
 }
