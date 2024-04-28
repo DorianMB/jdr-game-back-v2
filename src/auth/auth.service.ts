@@ -12,7 +12,12 @@ export class AuthService {
   ) {}
 
   async generateJwt(user: User) {
-    const payload = { username: user.name, mail: user.mail, sub: user.user_id };
+    const payload = {
+      username: user.name,
+      mail: user.mail,
+      sub: user.user_id,
+      is_admin: user.is_admin,
+    };
     return this.jwtService.sign(payload);
   }
 
@@ -50,8 +55,6 @@ export class AuthService {
       throw new NotFoundException('Invalid password');
     }
     delete foundUser.password;
-    //generateJwt(foundUser);
-    const jwt = await this.generateJwt(foundUser);
-    return jwt;
+    return await this.generateJwt(foundUser);
   }
 }
