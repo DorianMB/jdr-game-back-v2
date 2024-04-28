@@ -11,6 +11,7 @@ import { Item } from './entities/Items';
 import { LootTable } from './entities/LootTable';
 import { Stat } from './entities/Stat';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -32,10 +33,19 @@ import { UsersModule } from './users/users.module';
         synchronize: true,
       }),
     }),
-    TypeOrmModule.forFeature([User, Bag, Item, Equipment, Character, LootTable, Stat]),
+    TypeOrmModule.forFeature([
+      User,
+      Bag,
+      Item,
+      Equipment,
+      Character,
+      LootTable,
+      Stat,
+    ]),
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
