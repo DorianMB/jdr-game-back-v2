@@ -8,13 +8,12 @@ import { Bag } from './entities/Bag';
 
 @Injectable()
 export class AppService {
-
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     @InjectRepository(Character)
     private characterRepository: Repository<Character>,
-  ) { }
+  ) {}
 
   getHello(): string {
     return 'Hello World! from back';
@@ -23,7 +22,7 @@ export class AppService {
   async postTest(user: User): Promise<string> {
     console.log(user);
     try {
-      const newUser = await this.usersRepository.save(user)
+      const newUser = await this.usersRepository.save(user);
       console.log('User has been saved', newUser);
       this.postCharacter({
         user_id: newUser,
@@ -32,9 +31,9 @@ export class AppService {
         stat_id: new Stat(),
         bag_id: new Bag(),
         caracter_id: 0,
-        equipment: null,
-        picture: ''
-      })
+        equipment_id: null,
+        picture: '',
+      });
       return 'User has been saved';
     } catch (error) {
       console.log('Error while saving user', error);
@@ -45,7 +44,7 @@ export class AppService {
   async postCharacter(caracter: Character): Promise<string> {
     console.log(caracter);
     try {
-      const newCharacter = await this.characterRepository.save(caracter)
+      const newCharacter = await this.characterRepository.save(caracter);
       console.log('Character has been saved', newCharacter);
       return 'Character has been saved';
     } catch (error) {

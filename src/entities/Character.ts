@@ -1,10 +1,11 @@
 import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    ManyToOne,
-    JoinColumn,
-    OneToOne,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  Relation,
 } from 'typeorm';
 import { Equipment } from './Equipment';
 import { User } from './User';
@@ -13,31 +14,31 @@ import { Bag } from './Bag';
 
 @Entity('character')
 export class Character {
-    @PrimaryGeneratedColumn()
-    caracter_id: number;
+  @PrimaryGeneratedColumn()
+  caracter_id: number;
 
-    @ManyToOne(() => User)
-    @JoinColumn({ name: 'user_id' })
-    user_id: User;
+  @ManyToOne(() => User, (user) => user.user_id)
+  @JoinColumn({ name: 'user_id' })
+  user_id: Relation<User>;
 
-    @OneToOne(() => Equipment)
-    @JoinColumn({ name: 'equipment_id' })
-    equipment: Equipment;
+  @OneToOne(() => Equipment, (equipment) => equipment.equipment_id)
+  @JoinColumn({ name: 'equipment_id' })
+  equipment_id: Relation<Equipment>;
 
-    @OneToOne(() => Stat)
-    @JoinColumn({ name: 'stat_id' })
-    stat_id: Stat;
+  @OneToOne(() => Stat, (stat) => stat.stat_id)
+  @JoinColumn({ name: 'stat_id' })
+  stat_id: Relation<Stat>;
 
-    @OneToOne(() => Bag)
-    @JoinColumn({ name: 'bag_id' })
-    bag_id: Bag;
+  @OneToOne(() => Bag, (bag) => bag.bag_id)
+  @JoinColumn({ name: 'bag_id' })
+  bag_id: Relation<Bag>;
 
-    @Column({ nullable: true })
-    picture: string;
+  @Column({ nullable: true })
+  picture: string;
 
-    @Column()
-    experience: number;
+  @Column()
+  experience: number;
 
-    @Column()
-    money: number;
+  @Column()
+  money: number;
 }

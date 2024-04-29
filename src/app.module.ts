@@ -12,6 +12,7 @@ import { LootTable } from './entities/LootTable';
 import { Stat } from './entities/Stat';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { CharactersModule } from './characters/characters.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { AuthModule } from './auth/auth.module';
     ]),
     UsersModule,
     AuthModule,
+    CharactersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
