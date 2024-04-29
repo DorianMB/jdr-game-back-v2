@@ -1,6 +1,8 @@
+import { User } from '../../entities/User';
+
 export interface CharaterSendDto {
   character_id: number;
-  user_id: number;
+  user_id: number | User;
   equipment_id: number;
   stat_id: number;
   bag_id: number;

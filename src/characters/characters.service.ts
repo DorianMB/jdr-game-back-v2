@@ -18,7 +18,9 @@ export class CharactersService {
     return characters.map((character) => {
       return {
         ...character,
-        user_id: character.user_id?.user_id,
+        user_id: character.user_id?.user_id
+          ? character.user_id?.user_id
+          : character.user_id,
         equipment_id: character.equipment_id?.equipment_id,
         stat_id: character.stat_id?.stat_id,
         bag_id: character.bag_id?.bag_id,
@@ -30,9 +32,12 @@ export class CharactersService {
     character: Partial<Character>,
   ): Promise<CharaterSendDto> {
     const newCharacter = await this.charactersRepository.save(character);
+    console.log('newCharacter', newCharacter);
     return {
       ...newCharacter,
-      user_id: newCharacter.user_id?.user_id,
+      user_id: character.user_id?.user_id
+        ? character.user_id?.user_id
+        : character.user_id,
       equipment_id: newCharacter.equipment_id?.equipment_id,
       stat_id: newCharacter.stat_id?.stat_id,
       bag_id: newCharacter.bag_id?.bag_id,
@@ -45,7 +50,9 @@ export class CharactersService {
     const updatedCharacter = await this.charactersRepository.save(character);
     return {
       ...updatedCharacter,
-      user_id: updatedCharacter.user_id?.user_id,
+      user_id: character.user_id?.user_id
+        ? character.user_id?.user_id
+        : character.user_id,
       equipment_id: updatedCharacter.equipment_id?.equipment_id,
       stat_id: updatedCharacter.stat_id?.stat_id,
       bag_id: updatedCharacter.bag_id?.bag_id,
