@@ -31,6 +31,8 @@ export class AppService {
         character_id: 0,
         equipment_id: null,
         picture: '',
+        created_at: new Date(),
+        updated_at: new Date(),
       });
       return 'User has been saved';
     } catch (error) {

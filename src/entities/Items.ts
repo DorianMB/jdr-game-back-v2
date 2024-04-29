@@ -4,6 +4,7 @@ import {
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
+  Relation,
 } from 'typeorm';
 import { LootTable } from './LootTable';
 import { Bag } from './Bag';
@@ -13,13 +14,13 @@ export class Item {
   @PrimaryGeneratedColumn()
   item_id: number;
 
-  @OneToOne(() => LootTable)
+  @OneToOne(() => LootTable, (loot) => loot.loot_id)
   @JoinColumn({ name: 'loot_id' })
-  loot_id: LootTable;
+  loot_id: Relation<LootTable>;
 
-  @OneToOne(() => Bag)
+  @OneToOne(() => Bag, (bag) => bag.bag_id)
   @JoinColumn({ name: 'bag_id' })
-  bag_id: Bag;
+  bag_id: Relation<Bag>;
 
   @Column()
   level: number;
@@ -57,4 +58,10 @@ export class Item {
 
   @Column({ nullable: true })
   charm_value: number;
+
+  @Column()
+  created_at: Date;
+
+  @Column()
+  updated_at: Date;
 }

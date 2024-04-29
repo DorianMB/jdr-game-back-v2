@@ -41,4 +41,10 @@ export class Character {
 
   @Column()
   money: number;
+
+  @Column()
+  created_at: Date;
+
+  @Column()
+  updated_at: Date;
 }

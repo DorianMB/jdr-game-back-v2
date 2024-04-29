@@ -45,6 +45,8 @@ export class UsersService {
   }
 
   async createUser(user: Partial<User>): Promise<User> {
+    user.created_at = new Date();
+    user.updated_at = new Date();
     return await this.usersRepository.save(user);
   }
 
@@ -53,6 +55,7 @@ export class UsersService {
       const salt = await bcrypt.genSalt();
       user.password = await bcrypt.hash(user.password, salt);
     }
+    user.updated_at = new Date();
     const newUser = await this.usersRepository.save(user);
     delete newUser.password;
     return newUser;

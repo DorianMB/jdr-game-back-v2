@@ -1,19 +1,25 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
 export class User {
-    @PrimaryGeneratedColumn()
-    user_id: number;
+  @PrimaryGeneratedColumn()
+  user_id: number;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @Column()
-    mail: string;
+  @Column()
+  mail: string;
 
-    @Column()
-    password: string;
+  @Column()
+  password: string;
 
-    @Column('tinyint')
-    is_admin: number;
+  @Column('tinyint')
+  is_admin: number;
+
+  @Column()
+  created_at: Date;
+
+  @Column()
+  updated_at: Date;
 }

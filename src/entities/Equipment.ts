@@ -1,4 +1,11 @@
-import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm';
 import { Item } from './Items';
 
 @Entity('equipment')
@@ -6,35 +13,41 @@ export class Equipment {
   @PrimaryGeneratedColumn()
   equipment_id: number;
 
-  @OneToOne(() => Item)
+  @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'helmet_id' })
-  helmet: Item;
+  helmet: Relation<Item>;
 
-  @OneToOne(() => Item)
+  @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'chestplate_id' })
-  chestplate: Item;
+  chestplate: Relation<Item>;
 
-  @OneToOne(() => Item)
+  @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'gloves_id' })
-  gloves: Item;
+  gloves: Relation<Item>;
 
-  @OneToOne(() => Item)
+  @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'boots_id' })
-  boots: Item;
+  boots: Relation<Item>;
 
-  @OneToOne(() => Item)
+  @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'sword_id' })
-  primary_weapon: Item;
+  primary_weapon: Relation<Item>;
 
-  @OneToOne(() => Item)
+  @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'shield_id' })
-  secondary_weapon: Item;
+  secondary_weapon: Relation<Item>;
 
-  @OneToOne(() => Item)
+  @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'bow_id' })
-  primary_magic_item: Item;
+  primary_magic_item: Relation<Item>;
 
-  @OneToOne(() => Item)
+  @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'arrow_id' })
-  secondary_magic_item: Item;
+  secondary_magic_item: Relation<Item>;
+
+  @Column()
+  created_at: Date;
+
+  @Column()
+  updated_at: Date;
 }

@@ -31,6 +31,8 @@ export class CharactersService {
   async createCharacter(
     character: Partial<Character>,
   ): Promise<CharaterSendDto> {
+    character.created_at = new Date();
+    character.updated_at = new Date();
     const newCharacter = await this.charactersRepository.save(character);
     return {
       ...newCharacter,
@@ -46,6 +48,7 @@ export class CharactersService {
   async patchCharacter(
     character: Partial<Character>,
   ): Promise<CharaterSendDto> {
+    character.updated_at = new Date();
     const updatedCharacter = await this.charactersRepository.save(character);
     return {
       ...updatedCharacter,

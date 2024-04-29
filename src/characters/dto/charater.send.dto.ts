@@ -9,4 +9,6 @@ export interface CharaterSendDto {
   picture: string;
   experience: number;
   money: number;
+  created_at: Date;
+  updated_at: Date;
 }
