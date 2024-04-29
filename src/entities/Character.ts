@@ -15,7 +15,7 @@ import { Bag } from './Bag';
 @Entity('character')
 export class Character {
   @PrimaryGeneratedColumn()
-  caracter_id: number;
+  character_id: number;
 
   @ManyToOne(() => User, (user) => user.user_id)
   @JoinColumn({ name: 'user_id' })

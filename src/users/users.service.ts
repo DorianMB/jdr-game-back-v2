@@ -16,7 +16,6 @@ export class UsersService {
       delete user.password;
       return user;
     });
-    console.log(users);
     return users;
   }
 
@@ -57,5 +56,9 @@ export class UsersService {
     const newUser = await this.usersRepository.save(user);
     delete newUser.password;
     return newUser;
+  }
+
+  async deleteUser(id: number): Promise<void> {
+    await this.usersRepository.delete(id);
   }
 }

@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../entities/User';
@@ -23,5 +31,11 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   async updateUser(@Body() user: Partial<User>): Promise<User> {
     return await this.usersService.updateUser(user);
+  }
+
+  @Delete('/:id')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteUser(@Param('id') id: string): Promise<void> {
+    return await this.usersService.deleteUser(+id);
   }
 }

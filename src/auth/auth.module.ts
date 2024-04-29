@@ -14,7 +14,7 @@ import { AuthController } from './auth.controller';
     JwtModule.register({
       secret: 'JdrGamePass',
       signOptions: {
-        expiresIn: 3600,
+        expiresIn: 86400,
       },
     }),
     TypeOrmModule.forFeature([User]),

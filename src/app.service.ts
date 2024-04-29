@@ -20,35 +20,29 @@ export class AppService {
   }
 
   async postTest(user: User): Promise<string> {
-    console.log(user);
     try {
       const newUser = await this.usersRepository.save(user);
-      console.log('User has been saved', newUser);
       this.postCharacter({
         user_id: newUser,
         experience: 0,
         money: 0,
         stat_id: new Stat(),
         bag_id: new Bag(),
-        caracter_id: 0,
+        character_id: 0,
         equipment_id: null,
         picture: '',
       });
       return 'User has been saved';
     } catch (error) {
-      console.log('Error while saving user', error);
       return 'Error while saving user';
     }
   }
 
   async postCharacter(caracter: Character): Promise<string> {
-    console.log(caracter);
     try {
       const newCharacter = await this.characterRepository.save(caracter);
-      console.log('Character has been saved', newCharacter);
       return 'Character has been saved';
     } catch (error) {
-      console.log('Error while saving character', error);
       return 'Error while saving character';
     }
   }
