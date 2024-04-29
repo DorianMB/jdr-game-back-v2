@@ -32,7 +32,6 @@ export class CharactersService {
     character: Partial<Character>,
   ): Promise<CharaterSendDto> {
     const newCharacter = await this.charactersRepository.save(character);
-    console.log('newCharacter', newCharacter);
     return {
       ...newCharacter,
       user_id: character.user_id?.user_id
@@ -60,7 +59,6 @@ export class CharactersService {
   }
 
   async deleteCharacter(id: number): Promise<void> {
-    console.log('id2', id);
     await this.charactersRepository.delete(id);
   }
 }

@@ -42,7 +42,6 @@ export class CharactersController {
   @Delete('/:id')
   @UseGuards(AuthGuard('jwt'))
   async deleteCharacter(@Param('id') id: string): Promise<void> {
-    console.log('id1', id);
     return await this.charactersService.deleteCharacter(+id);
   }
 }
