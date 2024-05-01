@@ -14,7 +14,7 @@ export class Item {
   @PrimaryGeneratedColumn()
   item_id: number;
 
-  @OneToOne(() => LootTable, (loot) => loot.loot_id)
+  @OneToOne(() => LootTable, (loot) => loot.loot_table_id)
   @JoinColumn({ name: 'loot_id' })
   loot_id: Relation<LootTable>;
 

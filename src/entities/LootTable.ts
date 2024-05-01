@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('loot_table')
 export class LootTable {
   @PrimaryGeneratedColumn()
-  loot_id: number;
+  loot_table_id: number;
 
   @Column('enum', {
     enum: [
@@ -22,12 +22,12 @@ export class LootTable {
   })
   type: string;
 
-  @Column({ nullable: true })
+  @Column('text', { nullable: true })
   picture: string;
 
-  @Column({ nullable: true })
+  @Column('text', { nullable: true })
   fight_picture: string;
-  s;
+
   @Column()
   name: string;
 
@@ -63,6 +63,30 @@ export class LootTable {
 
   @Column({ nullable: true })
   speed_min: number;
+
+  @Column({ nullable: true })
+  speed_max: number;
+
+  @Column({ nullable: true })
+  charisma_min: number;
+
+  @Column({ nullable: true })
+  charisma_max: number;
+
+  @Column({ nullable: true })
+  health_min: number;
+
+  @Column({ nullable: true })
+  health_max: number;
+
+  @Column({ nullable: true })
+  luck_min: number;
+
+  @Column({ nullable: true })
+  luck_max: number;
+
+  @Column({ nullable: true })
+  price: number;
 
   @Column()
   created_at: Date;
