@@ -32,7 +32,6 @@ export class EquipmentsService {
         'secondary_magic_item_id',
       ],
     });
-    console.log(equipments);
     return equipments.map((equipment) => {
       return {
         ...equipment,
