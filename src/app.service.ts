@@ -3,8 +3,6 @@ import { User } from './entities/User';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Character } from './entities/Character';
-import { Stat } from './entities/Stat';
-import { Bag } from './entities/Bag';
 
 @Injectable()
 export class AppService {
@@ -26,10 +24,7 @@ export class AppService {
         user_id: newUser,
         experience: 0,
         money: 0,
-        stat_id: new Stat(),
-        bag_id: new Bag(),
         character_id: 0,
-        equipment_id: null,
         picture: '',
         created_at: new Date(),
         updated_at: new Date(),
@@ -40,7 +35,7 @@ export class AppService {
     }
   }
 
-  async postCharacter(caracter: Character): Promise<string> {
+  async postCharacter(caracter: Partial<Character>): Promise<string> {
     try {
       const newCharacter = await this.characterRepository.save(caracter);
       return 'Character has been saved';

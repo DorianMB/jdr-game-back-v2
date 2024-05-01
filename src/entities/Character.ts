@@ -33,7 +33,7 @@ export class Character {
   @JoinColumn({ name: 'bag_id' })
   bag_id: Relation<Bag>;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   picture: string;
 
   @Column()
@@ -41,6 +41,9 @@ export class Character {
 
   @Column()
   money: number;
+
+  @Column()
+  name: string;
 
   @Column()
   created_at: Date;
