@@ -13,6 +13,8 @@ export class BagService {
   ) {}
 
   async create(createBagDto: CreateBagDto): Promise<Bag> {
+    createBagDto.created_at = new Date();
+    createBagDto.updated_at = new Date();
     return await this.bagRepository.save(createBagDto);
   }
 
@@ -29,6 +31,7 @@ export class BagService {
   }
 
   async update(updateBagDto: UpdateBagDto): Promise<Bag> {
+    updateBagDto.updated_at = new Date();
     return await this.bagRepository.save(updateBagDto);
   }
 

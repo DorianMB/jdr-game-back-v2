@@ -14,7 +14,7 @@ import { UpdateBagDto } from './dto/update-bag.dto';
 import { Bag } from '../entities/Bag';
 import { AuthGuard } from '@nestjs/passport';
 
-@Controller('bag')
+@Controller('bags')
 export class BagController {
   constructor(private readonly bagService: BagService) {}
 
