@@ -14,6 +14,8 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CharactersModule } from './characters/characters.module';
 import { BagModule } from './bag/bag.module';
+import { EquipmentsModule } from './equipments/equipments.module';
+import { StatsModule } from './stats/stats.module';
 
 @Module({
   imports: [
@@ -48,6 +50,8 @@ import { BagModule } from './bag/bag.module';
     AuthModule,
     CharactersModule,
     BagModule,
+    EquipmentsModule,
+    StatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -30,19 +30,19 @@ export class Equipment {
   boots: Relation<Item>;
 
   @OneToOne(() => Item, (item) => item.item_id)
-  @JoinColumn({ name: 'sword_id' })
+  @JoinColumn({ name: 'primary_weapon_id' })
   primary_weapon: Relation<Item>;
 
   @OneToOne(() => Item, (item) => item.item_id)
-  @JoinColumn({ name: 'shield_id' })
+  @JoinColumn({ name: 'secondary_weapon_id' })
   secondary_weapon: Relation<Item>;
 
   @OneToOne(() => Item, (item) => item.item_id)
-  @JoinColumn({ name: 'bow_id' })
+  @JoinColumn({ name: 'primary_magic_item_id' })
   primary_magic_item: Relation<Item>;
 
   @OneToOne(() => Item, (item) => item.item_id)
-  @JoinColumn({ name: 'arrow_id' })
+  @JoinColumn({ name: 'secondary_magic_item_id' })
   secondary_magic_item: Relation<Item>;
 
   @Column()
