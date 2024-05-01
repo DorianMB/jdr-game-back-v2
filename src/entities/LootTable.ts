@@ -86,6 +86,19 @@ export class LootTable {
   luck_max: number;
 
   @Column()
+  charm: boolean;
+
+  @Column({
+    type: 'enum',
+    enum: ['xp_boost', 'gold_boost', 'looting_boost', 'first_attack_boost'],
+    nullable: true,
+  })
+  charm_type: string;
+
+  @Column({ nullable: true })
+  charm_value: number;
+
+  @Column()
   created_at: Date;
 
   @Column()

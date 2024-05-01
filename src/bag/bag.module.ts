@@ -8,5 +8,6 @@ import { Bag } from '../entities/Bag';
   imports: [TypeOrmModule.forFeature([Bag])],
   controllers: [BagController],
   providers: [BagService],
+  exports: [BagService],
 })
 export class BagModule {}
