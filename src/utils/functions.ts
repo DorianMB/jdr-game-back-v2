@@ -1,3 +1,5 @@
+import { RARITY_LIST } from './constants';
+
 export const lootTableStatMinMax = (): [number | null, number | null] => {
   const tirage = Math.floor(Math.random() * 5);
   console.log('tirage', tirage);
@@ -26,4 +28,14 @@ export const lootTableStatMinMax = (): [number | null, number | null] => {
       console.log('case default', [null, null]);
       return [null, null];
   }
+};
+
+export const randomRarity = (maxRarity): string => {
+  const index = RARITY_LIST.findIndex((rarity) => rarity === maxRarity);
+  const newRarityArray = RARITY_LIST.slice(0, index + 1);
+  return newRarityArray[Math.floor(Math.random() * newRarityArray.length)];
+};
+
+export const randomBetween = (min: number, max: number): number => {
+  return Math.floor(min + Math.random() * (max - min));
 };

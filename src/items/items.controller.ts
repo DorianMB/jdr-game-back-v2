@@ -19,6 +19,18 @@ import { SendItemDto } from './dto/send-item.dto';
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 
+  //Others methods
+
+  @Get('/generate/:lootTableId')
+  @UseGuards(AuthGuard('jwt'))
+  async generateItemFromLootTable(
+    @Param('lootTableId') lootTableId: string,
+  ): Promise<Item> {
+    return await this.itemsService.generateItemFromLootTable(+lootTableId);
+  }
+
+  //CRUD
+
   @Post()
   @UseGuards(AuthGuard('jwt'))
   async create(@Body() createItemDto: CreateItemDto): Promise<Item> {

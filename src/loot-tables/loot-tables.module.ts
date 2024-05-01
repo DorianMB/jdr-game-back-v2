@@ -8,5 +8,6 @@ import { LootTable } from '../entities/LootTable';
   imports: [TypeOrmModule.forFeature([LootTable])],
   controllers: [LootTablesController],
   providers: [LootTablesService],
+  exports: [LootTablesService],
 })
 export class LootTablesModule {}
