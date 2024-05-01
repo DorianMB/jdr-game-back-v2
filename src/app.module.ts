@@ -13,6 +13,7 @@ import { Stat } from './entities/Stat';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CharactersModule } from './characters/characters.module';
+import { BagModule } from './bag/bag.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { CharactersModule } from './characters/characters.module';
     UsersModule,
     AuthModule,
     CharactersModule,
+    BagModule,
   ],
   controllers: [AppController],
   providers: [AppService],
