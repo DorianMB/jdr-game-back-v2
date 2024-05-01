@@ -1,4 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  CHARM_TYPE_LIST,
+  LOOT_TYPE_LIST,
+  RARITY_LIST,
+} from '../utils/constants';
 
 @Entity('loot_table')
 export class LootTable {
@@ -6,19 +11,7 @@ export class LootTable {
   loot_table_id: number;
 
   @Column('enum', {
-    enum: [
-      'helmet',
-      'chestplate',
-      'gloves',
-      'boots',
-      'sword',
-      'shield',
-      'bow',
-      'arrow',
-      'magic_wand',
-      'magic_book',
-      'magic_item',
-    ],
+    enum: LOOT_TYPE_LIST,
   })
   type: string;
 
@@ -34,7 +27,7 @@ export class LootTable {
   @Column({ nullable: true, type: 'text' })
   description: string;
 
-  @Column('enum', { enum: ['common', 'uncommun', 'rare', 'epic', 'legendary'] })
+  @Column('enum', { enum: RARITY_LIST })
   rarity: string;
 
   @Column({ nullable: true })
@@ -90,7 +83,7 @@ export class LootTable {
 
   @Column({
     type: 'enum',
-    enum: ['xp_boost', 'gold_boost', 'looting_boost', 'first_attack_boost'],
+    enum: CHARM_TYPE_LIST,
     nullable: true,
   })
   charm_type: string;

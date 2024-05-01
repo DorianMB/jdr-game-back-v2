@@ -18,6 +18,15 @@ import { LootTable } from '../entities/LootTable';
 export class LootTablesController {
   constructor(private readonly lootTablesService: LootTablesService) {}
 
+  // Other methods
+
+  @Get('random')
+  @UseGuards(AuthGuard('jwt'))
+  async getRandomLootTable(): Promise<any> {
+    return await this.lootTablesService.getRandomLootTable();
+  }
+
+  //CRUD
   @Post()
   @UseGuards(AuthGuard('jwt'))
   async create(

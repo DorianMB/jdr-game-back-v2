@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { LootTable } from './LootTable';
 import { Bag } from './Bag';
+import { CHARM_TYPE_LIST, RARITY_LIST } from '../utils/constants';
 
 @Entity('items')
 export class Item {
@@ -28,7 +29,7 @@ export class Item {
   @Column({ nullable: true })
   price: number;
 
-  @Column('enum', { enum: ['common', 'uncommun', 'rare', 'epic', 'legendary'] })
+  @Column('enum', { enum: RARITY_LIST })
   rarity: string;
 
   @Column({ nullable: true })
@@ -54,7 +55,7 @@ export class Item {
 
   @Column({
     type: 'enum',
-    enum: ['xp_boost', 'gold_boost', 'looting_boost', 'first_attack_boost'],
+    enum: CHARM_TYPE_LIST,
     nullable: true,
   })
   charm_type: string;
