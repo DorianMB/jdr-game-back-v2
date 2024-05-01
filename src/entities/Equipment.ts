@@ -14,36 +14,36 @@ export class Equipment {
   equipment_id: number;
 
   @OneToOne(() => Item, (item) => item.item_id)
-  @JoinColumn({ name: 'helmet_id' })
-  helmet: Relation<Item>;
+  @JoinColumn({ name: 'c' })
+  helmet_id: Relation<Item>;
 
   @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'chestplate_id' })
-  chestplate: Relation<Item>;
+  chestplate_id: Relation<Item>;
 
   @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'gloves_id' })
-  gloves: Relation<Item>;
+  gloves_id: Relation<Item>;
 
   @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'boots_id' })
-  boots: Relation<Item>;
+  boots_id: Relation<Item>;
 
   @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'primary_weapon_id' })
-  primary_weapon: Relation<Item>;
+  primary_weapon_id: Relation<Item>;
 
   @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'secondary_weapon_id' })
-  secondary_weapon: Relation<Item>;
+  secondary_weapon_id: Relation<Item>;
 
   @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'primary_magic_item_id' })
-  primary_magic_item: Relation<Item>;
+  primary_magic_item_id: Relation<Item>;
 
   @OneToOne(() => Item, (item) => item.item_id)
   @JoinColumn({ name: 'secondary_magic_item_id' })
-  secondary_magic_item: Relation<Item>;
+  secondary_magic_item_id: Relation<Item>;
 
   @Column()
   created_at: Date;

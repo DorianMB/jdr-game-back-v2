@@ -25,6 +25,9 @@ export class Item {
   @Column()
   level: number;
 
+  @Column({ nullable: true })
+  price: number;
+
   @Column('enum', { enum: ['common', 'uncommun', 'rare', 'epic', 'legendary'] })
   rarity: string;
 

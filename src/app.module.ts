@@ -17,6 +17,7 @@ import { BagModule } from './bag/bag.module';
 import { EquipmentsModule } from './equipments/equipments.module';
 import { StatsModule } from './stats/stats.module';
 import { LootTablesModule } from './loot-tables/loot-tables.module';
+import { ItemsModule } from './items/items.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { LootTablesModule } from './loot-tables/loot-tables.module';
     EquipmentsModule,
     StatsModule,
     LootTablesModule,
+    ItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

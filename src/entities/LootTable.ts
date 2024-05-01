@@ -85,9 +85,6 @@ export class LootTable {
   @Column({ nullable: true })
   luck_max: number;
 
-  @Column({ nullable: true })
-  price: number;
-
   @Column()
   created_at: Date;
 
