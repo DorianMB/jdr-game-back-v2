@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { LootTablesService } from './loot-tables.service';
 import { LootTablesController } from './loot-tables.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { LootTable } from '../entities/LootTable';
+import { ENTITIES, PROVIDERS } from '../utils/module.constants';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([LootTable])],
+  imports: [ENTITIES],
   controllers: [LootTablesController],
-  providers: [LootTablesService],
+  providers: [...PROVIDERS],
   exports: [LootTablesService],
 })
 export class LootTablesModule {}

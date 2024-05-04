@@ -28,8 +28,9 @@ export class ItemsService {
     return await this.itemRepository.save(createItemDto);
   }
 
-  async findAll(): Promise<SendItemDto[]> {
+  async findAll(where?: any): Promise<SendItemDto[]> {
     const items = await this.itemRepository.find({
+      where: where ? where : '',
       relations: ['bag_id', 'loot_id'],
     });
     return items.map((item) => {

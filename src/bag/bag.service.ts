@@ -5,12 +5,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Bag } from '../entities/Bag';
 import { Repository } from 'typeorm';
 import { convertEmptyStringToNull } from '../utils/functions';
+import { ItemsService } from '../items/items.service';
+import { SendItemDto } from '../items/dto/send-item.dto';
 
 @Injectable()
 export class BagService {
   constructor(
     @InjectRepository(Bag)
     private bagRepository: Repository<Bag>,
+    private itemsService: ItemsService,
   ) {}
 
   async create(createBagDto: CreateBagDto): Promise<Bag> {
@@ -29,6 +32,12 @@ export class BagService {
       where: {
         bag_id: id,
       },
+    });
+  }
+
+  async findItemsByBagId(id: number): Promise<SendItemDto[]> {
+    return await this.itemsService.findAll({
+      bag_id: id,
     });
   }
 

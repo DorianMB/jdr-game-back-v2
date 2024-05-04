@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { BagService } from './bag.service';
 import { BagController } from './bag.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Bag } from '../entities/Bag';
+import { ENTITIES, PROVIDERS } from '../utils/module.constants';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Bag])],
+  imports: [ENTITIES],
   controllers: [BagController],
-  providers: [BagService],
+  providers: [...PROVIDERS],
   exports: [BagService],
 })
 export class BagModule {}

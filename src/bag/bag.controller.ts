@@ -13,6 +13,7 @@ import { CreateBagDto } from './dto/create-bag.dto';
 import { UpdateBagDto } from './dto/update-bag.dto';
 import { Bag } from '../entities/Bag';
 import { AuthGuard } from '@nestjs/passport';
+import { SendItemDto } from '../items/dto/send-item.dto';
 
 @Controller('bags')
 export class BagController {
@@ -28,6 +29,12 @@ export class BagController {
   @UseGuards(AuthGuard('jwt'))
   async findAll(): Promise<Bag[]> {
     return await this.bagService.findAll();
+  }
+
+  @Get('/items/:id')
+  @UseGuards(AuthGuard('jwt'))
+  async findItemsByBagId(@Param('id') id: string): Promise<SendItemDto[]> {
+    return await this.bagService.findItemsByBagId(+id);
   }
 
   @Get(':id')
