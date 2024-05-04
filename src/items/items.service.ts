@@ -5,7 +5,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Item } from '../entities/Items';
 import { Repository } from 'typeorm';
 import { SendItemDto } from './dto/send-item.dto';
-import { randomBetween, randomRarity } from '../utils/functions';
+import {
+  convertEmptyStringToNull,
+  randomBetween,
+  randomRarity,
+} from '../utils/functions';
 import { LootTablesService } from '../loot-tables/loot-tables.service';
 import { CHARM_TYPE_LIST } from '../utils/constants';
 
@@ -18,6 +22,7 @@ export class ItemsService {
   ) {}
 
   async create(createItemDto: CreateItemDto): Promise<Item> {
+    createItemDto = convertEmptyStringToNull(createItemDto);
     createItemDto.created_at = new Date();
     createItemDto.updated_at = new Date();
     return await this.itemRepository.save(createItemDto);
@@ -55,6 +60,7 @@ export class ItemsService {
   }
 
   async update(updateItemDto: UpdateItemDto): Promise<Item> {
+    updateItemDto = convertEmptyStringToNull(updateItemDto);
     updateItemDto.updated_at = new Date();
     return await this.itemRepository.save(updateItemDto);
   }

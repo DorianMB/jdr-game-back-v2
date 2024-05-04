@@ -36,13 +36,13 @@ export class Character {
   @Column({ type: 'text', nullable: true })
   picture: string;
 
-  @Column()
+  @Column({ nullable: true })
   experience: number;
 
-  @Column()
+  @Column({ nullable: true })
   money: number;
 
-  @Column()
+  @Column({ nullable: true })
   name: string;
 
   @Column()

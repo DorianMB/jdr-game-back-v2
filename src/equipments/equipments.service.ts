@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Equipment } from '../entities/Equipment';
 import { Repository } from 'typeorm';
 import { SendEquipmentDto } from './dto/send-equipment.dto';
+import { convertEmptyStringToNull } from '../utils/functions';
 
 @Injectable()
 export class EquipmentsService {
@@ -14,6 +15,7 @@ export class EquipmentsService {
   ) {}
 
   async create(createEquipmentDto: CreateEquipmentDto): Promise<Equipment> {
+    createEquipmentDto = convertEmptyStringToNull(createEquipmentDto);
     createEquipmentDto.created_at = new Date();
     createEquipmentDto.updated_at = new Date();
     return await this.equipmentRepository.save(createEquipmentDto);
@@ -143,6 +145,7 @@ export class EquipmentsService {
   }
 
   async update(updateEquipmentDto: UpdateEquipmentDto): Promise<Equipment> {
+    updateEquipmentDto = convertEmptyStringToNull(updateEquipmentDto);
     updateEquipmentDto.updated_at = new Date();
     return await this.equipmentRepository.save(updateEquipmentDto);
   }

@@ -8,6 +8,7 @@ import { EquipmentsService } from '../equipments/equipments.service';
 import { StatsService } from '../stats/stats.service';
 import { User } from '../entities/User';
 import { Equipment } from '../entities/Equipment';
+import { convertEmptyStringToNull } from '../utils/functions';
 
 @Injectable()
 export class CharactersService {
@@ -69,8 +70,9 @@ export class CharactersService {
   async createCharacter(
     character: Partial<Character>,
   ): Promise<CharacterSendDto> {
-    character.created_at = new Date();
-    character.updated_at = new Date();
+    character = convertEmptyStringToNull(character);
+    character.money = character.money || 0;
+    character.experience = character.experience || 0;
     character.bag_id = await this.bagService.create({ length: 5 });
     character.equipment_id = await this.equipmentsService.create({});
     character.stat_id = await this.statsService.create({
@@ -81,21 +83,19 @@ export class CharactersService {
       health: 10,
       luck: 10,
     });
+    character.created_at = new Date();
+    character.updated_at = new Date();
+    console.log(character);
     const newCharacter = await this.charactersRepository.save(character);
     return {
       ...newCharacter,
-      user_id: character.user_id?.user_id
-        ? character.user_id?.user_id
-        : character.user_id,
-      equipment_id: newCharacter.equipment_id?.equipment_id,
-      stat_id: newCharacter.stat_id?.stat_id,
-      bag_id: newCharacter.bag_id?.bag_id,
     };
   }
 
   async patchCharacter(
     character: Partial<Character>,
   ): Promise<CharacterSendDto> {
+    character = convertEmptyStringToNull(character);
     character.updated_at = new Date();
     const updatedCharacter = await this.charactersRepository.save(character);
     return {
@@ -110,6 +110,10 @@ export class CharactersService {
   }
 
   async deleteCharacter(id: number): Promise<void> {
+    const character = await this.findCharacterById(id);
     await this.charactersRepository.delete(id);
+    await this.bagService.remove(character.bag_id.bag_id);
+    await this.equipmentsService.remove(character.equipment_id.equipment_id);
+    await this.statsService.remove(character.stat_id.stat_id);
   }
 }

@@ -14,7 +14,10 @@ import {
   RARITY_LIST,
   STATS_TYPE_LIST,
 } from '../utils/constants';
-import { lootTableStatMinMax } from '../utils/functions';
+import {
+  convertEmptyStringToNull,
+  lootTableStatMinMax,
+} from '../utils/functions';
 
 @Injectable()
 export class LootTablesService {
@@ -26,6 +29,7 @@ export class LootTablesService {
   //CRUD
 
   async create(createLootTableDto: CreateLootTableDto): Promise<LootTable> {
+    createLootTableDto = convertEmptyStringToNull(createLootTableDto);
     createLootTableDto.created_at = new Date();
     createLootTableDto.updated_at = new Date();
     return await this.lootTableRepository.save(createLootTableDto);
@@ -44,6 +48,7 @@ export class LootTablesService {
   }
 
   async update(updateLootTableDto: UpdateLootTableDto): Promise<LootTable> {
+    updateLootTableDto = convertEmptyStringToNull(updateLootTableDto);
     updateLootTableDto.updated_at = new Date();
     return await this.lootTableRepository.save(updateLootTableDto);
   }

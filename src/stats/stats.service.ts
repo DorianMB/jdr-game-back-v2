@@ -4,6 +4,7 @@ import { UpdateStatDto } from './dto/update-stat.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Stat } from '../entities/Stat';
 import { Repository } from 'typeorm';
+import { convertEmptyStringToNull } from '../utils/functions';
 
 @Injectable()
 export class StatsService {
@@ -13,6 +14,7 @@ export class StatsService {
   ) {}
 
   async create(createStatDto: CreateStatDto): Promise<Stat> {
+    createStatDto = convertEmptyStringToNull(createStatDto);
     createStatDto.created_at = new Date();
     createStatDto.updated_at = new Date();
     return await this.statRepository.save(createStatDto);
@@ -31,6 +33,7 @@ export class StatsService {
   }
 
   async update(updateStatDto: UpdateStatDto): Promise<Stat> {
+    updateStatDto = convertEmptyStringToNull(updateStatDto);
     updateStatDto.updated_at = new Date();
     return await this.statRepository.save(updateStatDto);
   }

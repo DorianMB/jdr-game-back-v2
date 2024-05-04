@@ -4,6 +4,7 @@ import { UpdateBagDto } from './dto/update-bag.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Bag } from '../entities/Bag';
 import { Repository } from 'typeorm';
+import { convertEmptyStringToNull } from '../utils/functions';
 
 @Injectable()
 export class BagService {
@@ -13,6 +14,7 @@ export class BagService {
   ) {}
 
   async create(createBagDto: CreateBagDto): Promise<Bag> {
+    createBagDto = convertEmptyStringToNull(createBagDto);
     createBagDto.created_at = new Date();
     createBagDto.updated_at = new Date();
     return await this.bagRepository.save(createBagDto);
@@ -31,6 +33,7 @@ export class BagService {
   }
 
   async update(updateBagDto: UpdateBagDto): Promise<Bag> {
+    updateBagDto = convertEmptyStringToNull(updateBagDto);
     updateBagDto.updated_at = new Date();
     return await this.bagRepository.save(updateBagDto);
   }

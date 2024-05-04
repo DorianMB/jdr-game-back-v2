@@ -1,5 +1,21 @@
 import { RARITY_LIST } from './constants';
 
+export const convertEmptyStringToNull = (obj: any): any => {
+  const result: any = {};
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      if (obj[key] === '') {
+        result[key] = null;
+      } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+        result[key] = convertEmptyStringToNull(obj[key]);
+      } else {
+        result[key] = obj[key];
+      }
+    }
+  }
+  return result;
+};
+
 export const lootTableStatMinMax = (): [number | null, number | null] => {
   const tirage = Math.floor(Math.random() * 5);
   console.log('tirage', tirage);

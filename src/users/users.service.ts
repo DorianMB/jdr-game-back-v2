@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/User';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { convertEmptyStringToNull } from '../utils/functions';
 
 @Injectable()
 export class UsersService {
@@ -45,12 +46,14 @@ export class UsersService {
   }
 
   async createUser(user: Partial<User>): Promise<User> {
+    user = convertEmptyStringToNull(user);
     user.created_at = new Date();
     user.updated_at = new Date();
     return await this.usersRepository.save(user);
   }
 
   async updateUser(user: Partial<User>): Promise<User> {
+    user = convertEmptyStringToNull(user);
     if (user.password) {
       const salt = await bcrypt.genSalt();
       user.password = await bcrypt.hash(user.password, salt);
