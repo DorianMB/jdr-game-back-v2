@@ -14,7 +14,7 @@ export class Equipment {
   equipment_id: number;
 
   @OneToOne(() => Item, (item) => item.item_id)
-  @JoinColumn({ name: 'c' })
+  @JoinColumn({ name: 'helmet_id' })
   helmet_id: Relation<Item>;
 
   @OneToOne(() => Item, (item) => item.item_id)

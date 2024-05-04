@@ -2,10 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Character } from '../entities/Character';
 import { Repository } from 'typeorm';
-import { CharaterSendDto } from './dto/charater.send.dto';
+import { CharacterSendDto } from './dto/character.send.dto';
 import { BagService } from '../bag/bag.service';
 import { EquipmentsService } from '../equipments/equipments.service';
 import { StatsService } from '../stats/stats.service';
+import { User } from '../entities/User';
+import { Equipment } from '../entities/Equipment';
 
 @Injectable()
 export class CharactersService {
@@ -17,7 +19,7 @@ export class CharactersService {
     private statsService: StatsService,
   ) {}
 
-  async findAllCharacters(): Promise<CharaterSendDto[]> {
+  async findAllCharacters(): Promise<CharacterSendDto[]> {
     const characters = await this.charactersRepository.find({
       relations: ['user_id', 'equipment_id', 'stat_id', 'bag_id'],
     });
@@ -34,9 +36,39 @@ export class CharactersService {
     });
   }
 
+  async findAllCharacterByUserId(user_id: number): Promise<CharacterSendDto[]> {
+    const characters = await this.charactersRepository.find({
+      where: { user_id: user_id as Partial<User> },
+      relations: ['user_id', 'equipment_id', 'stat_id', 'bag_id'],
+    });
+    return characters.map((character) => {
+      return {
+        ...character,
+        user_id: character.user_id?.user_id
+          ? character.user_id?.user_id
+          : character.user_id,
+        equipment_id: character.equipment_id?.equipment_id,
+        stat_id: character.stat_id?.stat_id,
+        bag_id: character.bag_id?.bag_id,
+      };
+    });
+  }
+
+  async findCharacterById(id: number): Promise<Character> {
+    const character = await this.charactersRepository.findOne({
+      where: { character_id: id },
+      relations: ['user_id', 'equipment_id', 'stat_id', 'bag_id'],
+    });
+    const equipment = await this.equipmentsService.findOneCascade(
+      character.equipment_id.equipment_id,
+    );
+    character.equipment_id = equipment as Equipment;
+    return character;
+  }
+
   async createCharacter(
     character: Partial<Character>,
-  ): Promise<CharaterSendDto> {
+  ): Promise<CharacterSendDto> {
     character.created_at = new Date();
     character.updated_at = new Date();
     character.bag_id = await this.bagService.create({ length: 5 });
@@ -63,7 +95,7 @@ export class CharactersService {
 
   async patchCharacter(
     character: Partial<Character>,
-  ): Promise<CharaterSendDto> {
+  ): Promise<CharacterSendDto> {
     character.updated_at = new Date();
     const updatedCharacter = await this.charactersRepository.save(character);
     return {

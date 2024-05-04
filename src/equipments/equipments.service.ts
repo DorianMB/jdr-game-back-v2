@@ -108,6 +108,40 @@ export class EquipmentsService {
     };
   }
 
+  async findOneCascade(id: number): Promise<SendEquipmentDto> {
+    return await this.equipmentRepository.findOne({
+      relations: {
+        helmet_id: {
+          loot_id: true,
+        },
+        chestplate_id: {
+          loot_id: true,
+        },
+        gloves_id: {
+          loot_id: true,
+        },
+        boots_id: {
+          loot_id: true,
+        },
+        primary_weapon_id: {
+          loot_id: true,
+        },
+        secondary_weapon_id: {
+          loot_id: true,
+        },
+        primary_magic_item_id: {
+          loot_id: true,
+        },
+        secondary_magic_item_id: {
+          loot_id: true,
+        },
+      },
+      where: {
+        equipment_id: id,
+      },
+    });
+  }
+
   async update(updateEquipmentDto: UpdateEquipmentDto): Promise<Equipment> {
     updateEquipmentDto.updated_at = new Date();
     return await this.equipmentRepository.save(updateEquipmentDto);

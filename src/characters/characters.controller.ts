@@ -11,7 +11,7 @@ import {
 import { CharactersService } from './characters.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Character } from '../entities/Character';
-import { CharaterSendDto } from './dto/charater.send.dto';
+import { CharacterSendDto } from './dto/character.send.dto';
 
 @Controller('characters')
 export class CharactersController {
@@ -19,15 +19,29 @@ export class CharactersController {
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
-  async findAllCharacters(): Promise<CharaterSendDto[]> {
+  async findAllCharacters(): Promise<CharacterSendDto[]> {
     return await this.charactersService.findAllCharacters();
+  }
+
+  @Get('/user/:id')
+  @UseGuards(AuthGuard('jwt'))
+  async findAllCharacterByUserId(
+    @Param('id') id: string,
+  ): Promise<CharacterSendDto[]> {
+    return await this.charactersService.findAllCharacterByUserId(+id);
+  }
+
+  @Get('/:id')
+  @UseGuards(AuthGuard('jwt'))
+  async findCharacterById(@Param('id') id: string): Promise<Character> {
+    return await this.charactersService.findCharacterById(+id);
   }
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
   async createCharacter(
     @Body() character: Partial<Character>,
-  ): Promise<CharaterSendDto> {
+  ): Promise<CharacterSendDto> {
     return await this.charactersService.createCharacter(character);
   }
 
@@ -35,7 +49,7 @@ export class CharactersController {
   @UseGuards(AuthGuard('jwt'))
   async patchCharacter(
     @Body() character: Partial<Character>,
-  ): Promise<CharaterSendDto> {
+  ): Promise<CharacterSendDto> {
     return await this.charactersService.patchCharacter(character);
   }
 
