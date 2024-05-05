@@ -44,6 +44,13 @@ export class ItemsService {
     });
   }
 
+  async findAllCascade(where?: any): Promise<SendItemDto[]> {
+    return await this.itemRepository.find({
+      where: where ? where : '',
+      relations: ['loot_id'],
+    });
+  }
+
   async findOne(id: number): Promise<SendItemDto> {
     const item = await this.itemRepository.findOne({
       relations: ['bag_id', 'loot_id'],

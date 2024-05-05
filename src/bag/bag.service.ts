@@ -36,7 +36,7 @@ export class BagService {
   }
 
   async findItemsByBagId(id: number): Promise<SendItemDto[]> {
-    return await this.itemsService.findAll({
+    return await this.itemsService.findAllCascade({
       bag_id: id,
     });
   }
