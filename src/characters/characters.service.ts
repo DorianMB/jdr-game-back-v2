@@ -5,10 +5,17 @@ import { Repository } from 'typeorm';
 import { CharacterSendDto } from './dto/character.send.dto';
 import { BagService } from '../bag/bag.service';
 import { EquipmentsService } from '../equipments/equipments.service';
+import { LootTablesService } from '../loot-tables/loot-tables.service';
 import { StatsService } from '../stats/stats.service';
 import { User } from '../entities/User';
 import { Equipment } from '../entities/Equipment';
-import { convertEmptyStringToNull } from '../utils/functions';
+import {
+  convertEmptyStringToNull,
+  randomEnemy,
+  simulateRounds,
+} from '../utils/functions';
+import { FightDto } from './dto/fight.dto';
+import { ItemsService } from '../items/items.service';
 
 @Injectable()
 export class CharactersService {
@@ -18,6 +25,8 @@ export class CharactersService {
     private bagService: BagService,
     private equipmentsService: EquipmentsService,
     private statsService: StatsService,
+    private lootTablesService: LootTablesService,
+    private itemsService: ItemsService,
   ) {}
 
   async findAllCharacters(): Promise<CharacterSendDto[]> {
@@ -115,5 +124,21 @@ export class CharactersService {
     await this.bagService.remove(character.bag_id.bag_id);
     await this.equipmentsService.remove(character.equipment_id.equipment_id);
     await this.statsService.remove(character.stat_id.stat_id);
+  }
+
+  async simulateFight(id: number): Promise<FightDto> {
+    const character = await this.findCharacterById(id);
+    const newFight = new FightDto();
+    newFight.enemy = randomEnemy(character);
+    newFight.rounds = simulateRounds(character, newFight.enemy);
+    newFight.isVictory = true;
+    const allLootTables = await this.lootTablesService.findAll();
+    newFight.treasure = await this.itemsService.generateItemFromLootTable(
+      allLootTables[Math.floor(Math.random() * allLootTables.length)]
+        .loot_table_id,
+    );
+    console.log('character', character);
+    console.log('newFight', newFight);
+    return {} as FightDto;
   }
 }

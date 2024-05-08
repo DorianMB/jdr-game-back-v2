@@ -12,16 +12,11 @@ import { CharactersService } from './characters.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Character } from '../entities/Character';
 import { CharacterSendDto } from './dto/character.send.dto';
+import { FightDto } from './dto/fight.dto';
 
 @Controller('characters')
 export class CharactersController {
   constructor(private readonly charactersService: CharactersService) {}
-
-  @Get()
-  @UseGuards(AuthGuard('jwt'))
-  async findAllCharacters(): Promise<CharacterSendDto[]> {
-    return await this.charactersService.findAllCharacters();
-  }
 
   @Get('/user/:id')
   @UseGuards(AuthGuard('jwt'))
@@ -29,6 +24,19 @@ export class CharactersController {
     @Param('id') id: string,
   ): Promise<CharacterSendDto[]> {
     return await this.charactersService.findAllCharacterByUserId(+id);
+  }
+
+  @Get('/fight/:id')
+  @UseGuards(AuthGuard('jwt'))
+  async simulateFight(@Param('id') id: string): Promise<FightDto> {
+    return await this.charactersService.simulateFight(+id);
+  }
+
+  //CRUD
+  @Get()
+  @UseGuards(AuthGuard('jwt'))
+  async findAllCharacters(): Promise<CharacterSendDto[]> {
+    return await this.charactersService.findAllCharacters();
   }
 
   @Get('/:id')
