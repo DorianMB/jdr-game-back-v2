@@ -59,7 +59,7 @@ export const randomEnemy = (character: Character): Enemy => {
   newEnemy.name = pickEnemy.name;
   newEnemy.picture = pickEnemy.picture;
   newEnemy.fight_picture = pickEnemy.fight_picture;
-  newEnemy.level = randomBetween(character.level - 5, character.level + 5);
+  newEnemy.level = randomBetween(0, character.level + 5);
   newEnemy.stat = new Stat();
   newEnemy.stat.strength = randomBetween(newEnemy.level, newEnemy.level * 10);
   newEnemy.stat.intelligence = randomBetween(

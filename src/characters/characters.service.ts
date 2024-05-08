@@ -16,6 +16,10 @@ import {
 } from '../utils/functions';
 import { FightDto } from './dto/fight.dto';
 import { ItemsService } from '../items/items.service';
+import { Item } from '../entities/Items';
+import { Bag } from '../entities/Bag';
+import { LootTable } from '../entities/LootTable';
+import { UpdateItemDto } from '../items/dto/update-item.dto';
 
 @Injectable()
 export class CharactersService {
@@ -133,12 +137,16 @@ export class CharactersService {
     newFight.rounds = simulateRounds(character, newFight.enemy);
     newFight.isVictory = true;
     const allLootTables = await this.lootTablesService.findAll();
-    newFight.treasure = await this.itemsService.generateItemFromLootTable(
+    const treasure: Item = await this.itemsService.generateItemFromLootTable(
       allLootTables[Math.floor(Math.random() * allLootTables.length)]
         .loot_table_id,
     );
-    console.log('character', character);
-    console.log('newFight', newFight);
-    return {} as FightDto;
+    const newUpdateItem = { ...treasure } as UpdateItemDto;
+    newUpdateItem.created_at = treasure.created_at;
+    newUpdateItem.bag_id = character.bag_id.bag_id as Partial<Bag>;
+    newUpdateItem.loot_id = treasure.loot_id
+      .loot_table_id as Partial<LootTable>;
+    newFight.treasure = await this.itemsService.update(newUpdateItem);
+    return newFight;
   }
 }

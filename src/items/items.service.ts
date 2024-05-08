@@ -77,7 +77,11 @@ export class ItemsService {
 
   async update(updateItemDto: UpdateItemDto): Promise<Item> {
     updateItemDto = convertEmptyStringToNull(updateItemDto);
+    if (typeof updateItemDto.created_at === 'object') {
+      updateItemDto.created_at = new Date();
+    }
     updateItemDto.updated_at = new Date();
+    console.log(updateItemDto);
     return await this.itemRepository.save(updateItemDto);
   }
 
