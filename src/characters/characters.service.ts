@@ -73,6 +73,7 @@ export class CharactersService {
     character = convertEmptyStringToNull(character);
     character.money = character.money || 0;
     character.experience = character.experience || 0;
+    character.level = character.level || 0;
     character.bag_id = await this.bagService.create({ length: 5 });
     character.equipment_id = await this.equipmentsService.create({});
     character.stat_id = await this.statsService.create({
@@ -85,7 +86,6 @@ export class CharactersService {
     });
     character.created_at = new Date();
     character.updated_at = new Date();
-    console.log(character);
     const newCharacter = await this.charactersRepository.save(character);
     return {
       ...newCharacter,

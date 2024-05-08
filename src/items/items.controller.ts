@@ -14,6 +14,8 @@ import { UpdateItemDto } from './dto/update-item.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Item } from '../entities/Items';
 import { SendItemDto } from './dto/send-item.dto';
+import { EquipDto } from './dto/equip.dto';
+import { SellDto } from './dto/sell.dto';
 
 @Controller('items')
 export class ItemsController {
@@ -27,6 +29,24 @@ export class ItemsController {
     @Param('lootTableId') lootTableId: string,
   ): Promise<Item> {
     return await this.itemsService.generateItemFromLootTable(+lootTableId);
+  }
+
+  @Patch('/equip')
+  @UseGuards(AuthGuard('jwt'))
+  async equipItem(@Body() info: EquipDto): Promise<boolean> {
+    return await this.itemsService.equipItem(info);
+  }
+
+  @Patch('/putInBag')
+  @UseGuards(AuthGuard('jwt'))
+  async putInBag(@Body() info: EquipDto): Promise<boolean> {
+    return await this.itemsService.putInBag(info);
+  }
+
+  @Patch('/sell')
+  @UseGuards(AuthGuard('jwt'))
+  async sellItem(@Body() info: SellDto): Promise<boolean> {
+    return await this.itemsService.sellItem(info);
   }
 
   //CRUD

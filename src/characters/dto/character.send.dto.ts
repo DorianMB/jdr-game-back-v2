@@ -11,6 +11,7 @@ export interface CharacterSendDto {
   stat_id?: number | Stat;
   bag_id?: number | Bag;
   picture?: string;
+  level?: number;
   experience?: number;
   money?: number;
   created_at?: Date;

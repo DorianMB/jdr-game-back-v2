@@ -1,5 +1,5 @@
 export const LOOT_BASE_PICTURE =
-  'https://cdn.discordapp.com/attachments/1066052875710627893/1235261032126087198/dorianmb_close_treasure_chest_transparent_background_0dd865ee-ea02-4eb5-8f5c-c4924cb417f3.png?ex=6633b9fc&is=6632687c&hm=92ac39e5b1f12e383deb62961e654867be5b24913be3128ff222a533c37a3bd9&';
+  'https://cdn.midjourney.com/c6dc1852-6979-4ff5-a033-64ca40a9d87b/0_0.png';
 
 export const RARITY_LIST = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
 

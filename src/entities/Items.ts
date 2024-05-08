@@ -3,7 +3,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
@@ -20,7 +19,7 @@ export class Item {
   @JoinColumn({ name: 'loot_id' })
   loot_id: Relation<LootTable>;
 
-  @OneToOne(() => Bag, (bag) => bag.bag_id)
+  @ManyToOne(() => Bag, (bag) => bag.bag_id)
   @JoinColumn({ name: 'bag_id' })
   bag_id: Relation<Bag>;
 

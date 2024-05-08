@@ -11,13 +11,28 @@ import {
   randomRarity,
 } from '../utils/functions';
 import { LootTablesService } from '../loot-tables/loot-tables.service';
-import { CHARM_TYPE_LIST } from '../utils/constants';
+import {
+  CHARM_TYPE_LIST,
+  PRIMARY_WEAPON_TYPE_LIST,
+  SECONDARY_WEAPON_TYPE_LIST,
+} from '../utils/constants';
+import { EquipDto } from './dto/equip.dto';
+import { Bag } from '../entities/Bag';
+import { Equipment } from '../entities/Equipment';
+import { SellDto } from './dto/sell.dto';
+import { Character } from '../entities/Character';
 
 @Injectable()
 export class ItemsService {
   constructor(
     @InjectRepository(Item)
     private itemRepository: Repository<Item>,
+    @InjectRepository(Bag)
+    private bagRepository: Repository<Bag>,
+    @InjectRepository(Equipment)
+    private equipmentRepository: Repository<Equipment>,
+    @InjectRepository(Character)
+    private characterRepository: Repository<Character>,
     private readonly lootTablesService: LootTablesService,
   ) {}
 
@@ -52,19 +67,12 @@ export class ItemsService {
   }
 
   async findOne(id: number): Promise<SendItemDto> {
-    const item = await this.itemRepository.findOne({
+    return await this.itemRepository.findOne({
       relations: ['bag_id', 'loot_id'],
       where: {
         item_id: id,
       },
     });
-    return {
-      ...item,
-      bag_id: item.bag_id?.bag_id ? item.bag_id?.bag_id : item.bag_id,
-      loot_id: item.loot_id?.loot_table_id
-        ? item.loot_id?.loot_table_id
-        : item.loot_id,
-    };
   }
 
   async update(updateItemDto: UpdateItemDto): Promise<Item> {
@@ -125,5 +133,167 @@ export class ItemsService {
     newItem.updated_at = new Date();
 
     return await this.itemRepository.save(newItem);
+  }
+
+  async equipItem(info: EquipDto): Promise<boolean> {
+    const item = await this.itemRepository.findOne({
+      relations: ['loot_id', 'bag_id'],
+      where: {
+        item_id: info.item_id,
+      },
+    });
+    const equipment = await this.equipmentRepository.findOne({
+      where: {
+        equipment_id: info.equipment_id,
+      },
+    });
+    const bag = await this.bagRepository.findOne({
+      where: {
+        bag_id: info.bag_id,
+      },
+    });
+    if (!item || !equipment || !bag) {
+      throw new NotFoundException('Item, equipment or bag not found');
+    }
+    if (item.bag_id.bag_id !== bag.bag_id) {
+      throw new NotFoundException('Item is not in the bag');
+    }
+    item.bag_id = null;
+    const typeOfItem = item.loot_id.type;
+    let itemToUnequip = null;
+    if (PRIMARY_WEAPON_TYPE_LIST.includes(typeOfItem)) {
+      itemToUnequip = equipment.primary_weapon_id;
+      equipment.primary_weapon_id = item;
+    } else if (SECONDARY_WEAPON_TYPE_LIST.includes(typeOfItem)) {
+      itemToUnequip = equipment.secondary_weapon_id;
+      equipment.secondary_weapon_id = item;
+    } else if (typeOfItem === 'magic_item') {
+      if (!equipment.primary_magic_item_id) {
+        equipment.primary_magic_item_id = item;
+      } else if (!equipment.secondary_magic_item_id) {
+        equipment.secondary_magic_item_id = item;
+      } else {
+        itemToUnequip = equipment.primary_magic_item_id;
+        equipment.primary_magic_item_id = item;
+      }
+    } else {
+      itemToUnequip = equipment[typeOfItem + '_id'];
+      equipment[typeOfItem + '_id'] = item;
+    }
+    if (itemToUnequip) {
+      const itemToUnequipData = await this.itemRepository.findOne({
+        where: {
+          item_id: itemToUnequip.item_id,
+        },
+      });
+      itemToUnequipData.bag_id = bag;
+      await this.itemRepository.save(itemToUnequipData);
+    }
+    await this.itemRepository.save(item);
+    await this.equipmentRepository.save(equipment);
+    return true;
+  }
+
+  async putInBag(info: EquipDto): Promise<boolean> {
+    const item = await this.itemRepository.findOne({
+      relations: ['loot_id'],
+      where: {
+        item_id: info.item_id,
+      },
+    });
+    const bag = await this.bagRepository.findOne({
+      where: {
+        bag_id: info.bag_id,
+      },
+    });
+    const ItemsInBag = await this.itemRepository.find({
+      where: {
+        bag_id: bag.bag_id as Partial<Bag>,
+      },
+    });
+    const equipment = await this.equipmentRepository.findOne({
+      relations: [
+        'helmet_id',
+        'chestplate_id',
+        'gloves_id',
+        'boots_id',
+        'primary_weapon_id',
+        'secondary_weapon_id',
+        'primary_magic_item_id',
+        'secondary_magic_item_id',
+      ],
+      where: {
+        equipment_id: info.equipment_id,
+      },
+    });
+    if (!item || !bag || !equipment) {
+      throw new NotFoundException('Item, bag or equipment not found');
+    }
+    if (ItemsInBag && ItemsInBag.length >= bag.length) {
+      throw new NotFoundException('Bag is full');
+    }
+    if (item.bag_id) {
+      throw new NotFoundException('Item is already in a bag');
+    }
+    item.bag_id = bag;
+    Object.keys(equipment).forEach((key) => {
+      if (equipment[key] && equipment[key].item_id === item.item_id) {
+        equipment[key] = null;
+      }
+    });
+    await this.itemRepository.save(item);
+    await this.equipmentRepository.save(equipment);
+    return true;
+  }
+
+  async sellItem(info: SellDto): Promise<boolean> {
+    const item = await this.itemRepository.findOne({
+      relations: ['loot_id', 'bag_id'],
+      where: {
+        item_id: info.item_id,
+      },
+    });
+    const bag = await this.bagRepository.findOne({
+      where: {
+        bag_id: info.bag_id,
+      },
+    });
+    const equipment = await this.equipmentRepository.findOne({
+      relations: [
+        'helmet_id',
+        'chestplate_id',
+        'gloves_id',
+        'boots_id',
+        'primary_weapon_id',
+        'secondary_weapon_id',
+        'primary_magic_item_id',
+        'secondary_magic_item_id',
+      ],
+      where: {
+        equipment_id: info.equipment_id,
+      },
+    });
+    const character = await this.characterRepository.findOne({
+      where: {
+        character_id: info.character_id,
+      },
+    });
+    console.log(item, bag, equipment, character);
+    if (!item || !bag || !equipment || !character) {
+      throw new NotFoundException(
+        'Item, bag, equipment or character not found',
+      );
+    }
+    Object.keys(equipment).forEach((key) => {
+      if (equipment[key] && equipment[key].item_id === item.item_id) {
+        equipment[key] = null;
+      }
+    });
+    character.money += item.price;
+    item.bag_id = null;
+    await this.characterRepository.save(character);
+    await this.itemRepository.save(item);
+    await this.equipmentRepository.save(equipment);
+    return true;
   }
 }

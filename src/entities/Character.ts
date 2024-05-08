@@ -37,6 +37,9 @@ export class Character {
   picture: string;
 
   @Column({ nullable: true })
+  level: number;
+
+  @Column({ nullable: true })
   experience: number;
 
   @Column({ nullable: true })
