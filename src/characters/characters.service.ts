@@ -11,6 +11,7 @@ import { User } from '../entities/User';
 import { Equipment } from '../entities/Equipment';
 import {
   convertEmptyStringToNull,
+  isVictory,
   randomEnemy,
   simulateRounds,
 } from '../utils/functions';
@@ -51,20 +52,9 @@ export class CharactersService {
   }
 
   async findAllCharacterByUserId(user_id: number): Promise<CharacterSendDto[]> {
-    const characters = await this.charactersRepository.find({
+    return await this.charactersRepository.find({
       where: { user_id: user_id as Partial<User> },
       relations: ['user_id', 'equipment_id', 'stat_id', 'bag_id'],
-    });
-    return characters.map((character) => {
-      return {
-        ...character,
-        user_id: character.user_id?.user_id
-          ? character.user_id?.user_id
-          : character.user_id,
-        equipment_id: character.equipment_id?.equipment_id,
-        stat_id: character.stat_id?.stat_id,
-        bag_id: character.bag_id?.bag_id,
-      };
     });
   }
 
@@ -135,18 +125,20 @@ export class CharactersService {
     const newFight = new FightDto();
     newFight.enemy = randomEnemy(character);
     newFight.rounds = simulateRounds(character, newFight.enemy);
-    newFight.isVictory = true;
-    const allLootTables = await this.lootTablesService.findAll();
-    const treasure: Item = await this.itemsService.generateItemFromLootTable(
-      allLootTables[Math.floor(Math.random() * allLootTables.length)]
-        .loot_table_id,
-    );
-    const newUpdateItem = { ...treasure } as UpdateItemDto;
-    newUpdateItem.created_at = treasure.created_at;
-    newUpdateItem.bag_id = character.bag_id.bag_id as Partial<Bag>;
-    newUpdateItem.loot_id = treasure.loot_id
-      .loot_table_id as Partial<LootTable>;
-    newFight.treasure = await this.itemsService.update(newUpdateItem);
+    newFight.isVictory = isVictory(newFight.rounds);
+    if (newFight.isVictory) {
+      const allLootTables = await this.lootTablesService.findAll();
+      const treasure: Item = await this.itemsService.generateItemFromLootTable(
+        allLootTables[Math.floor(Math.random() * allLootTables.length)]
+          .loot_table_id,
+      );
+      const newUpdateItem = { ...treasure } as UpdateItemDto;
+      newUpdateItem.created_at = treasure.created_at;
+      newUpdateItem.bag_id = character.bag_id.bag_id as Partial<Bag>;
+      newUpdateItem.loot_id = treasure.loot_id
+        .loot_table_id as Partial<LootTable>;
+      newFight.treasure = await this.itemsService.update(newUpdateItem);
+    }
     return newFight;
   }
 }

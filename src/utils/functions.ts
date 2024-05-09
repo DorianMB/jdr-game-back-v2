@@ -125,3 +125,7 @@ export const simulateRounds = (character: Character, enemy: Enemy): any[] => {
   }
   return rounds;
 };
+
+export const isVictory = (rounds: any[]): boolean => {
+  return rounds[rounds.length - 1].characterHealth > 0;
+};
