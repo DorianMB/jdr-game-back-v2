@@ -6,7 +6,7 @@ export class Bag {
   bag_id: number;
 
   @Column()
-  length: number;
+  size: number;
 
   @Column()
   created_at: Date;

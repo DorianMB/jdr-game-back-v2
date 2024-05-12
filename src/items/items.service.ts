@@ -252,7 +252,7 @@ export class ItemsService {
     if (!item || !bag || !equipment) {
       throw new NotFoundException('Item, bag or equipment not found');
     }
-    if (ItemsInBag && ItemsInBag.length >= bag.length) {
+    if (ItemsInBag && ItemsInBag.length >= bag.size) {
       throw new NotFoundException('Bag is full');
     }
     if (item.bag_id) {

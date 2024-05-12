@@ -19,6 +19,20 @@ import { SendItemDto } from '../items/dto/send-item.dto';
 export class BagController {
   constructor(private readonly bagService: BagService) {}
 
+  @Get('/items/:id')
+  @UseGuards(AuthGuard('jwt'))
+  async findItemsByBagId(@Param('id') id: string): Promise<SendItemDto[]> {
+    return await this.bagService.findItemsByBagId(+id);
+  }
+
+  @Get('/isBagFull/:id')
+  @UseGuards(AuthGuard('jwt'))
+  async findIfBagIsFull(@Param('id') id: string): Promise<boolean> {
+    return await this.bagService.findIfBagIsFull(+id);
+  }
+
+  //CRUD
+
   @Post()
   @UseGuards(AuthGuard('jwt'))
   async create(@Body() createBagDto: CreateBagDto): Promise<Bag> {
@@ -29,12 +43,6 @@ export class BagController {
   @UseGuards(AuthGuard('jwt'))
   async findAll(): Promise<Bag[]> {
     return await this.bagService.findAll();
-  }
-
-  @Get('/items/:id')
-  @UseGuards(AuthGuard('jwt'))
-  async findItemsByBagId(@Param('id') id: string): Promise<SendItemDto[]> {
-    return await this.bagService.findItemsByBagId(+id);
   }
 
   @Get(':id')

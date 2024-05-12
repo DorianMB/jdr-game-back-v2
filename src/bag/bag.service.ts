@@ -50,4 +50,10 @@ export class BagService {
   async remove(id: number): Promise<void> {
     await this.bagRepository.delete(id);
   }
+
+  async findIfBagIsFull(id: number): Promise<boolean> {
+    const itemsInBag = await this.findItemsByBagId(id);
+    const bag = await this.findOne(id);
+    return itemsInBag.length >= bag.size;
+  }
 }

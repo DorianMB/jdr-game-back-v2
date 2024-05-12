@@ -78,7 +78,7 @@ export class CharactersService {
     character.money = character.money || 0;
     character.experience = character.experience || 0;
     character.level = character.level || 0;
-    character.bag_id = await this.bagService.create({ length: 5 });
+    character.bag_id = await this.bagService.create({ size: 5 });
     character.equipment_id = await this.equipmentsService.create({});
     character.stat_id = await this.statsService.create({
       strength: 10,
@@ -139,6 +139,7 @@ export class CharactersService {
       const treasure: Item = await this.itemsService.generateItemFromLootTable(
         allLootTables[Math.floor(Math.random() * allLootTables.length)]
           .loot_table_id,
+        newFight.enemy.level,
       );
       const newUpdateItem = { ...treasure } as UpdateItemDto;
       newUpdateItem.created_at = treasure.created_at;
