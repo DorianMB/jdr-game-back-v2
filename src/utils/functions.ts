@@ -85,17 +85,32 @@ export const randomEnemy = (character: Character): Enemy => {
   newEnemy.name = pickEnemy.name;
   newEnemy.picture = pickEnemy.picture;
   newEnemy.fight_picture = pickEnemy.fight_picture;
-  newEnemy.level = randomBetween(character.level - 5, character.level + 5);
+  newEnemy.level = randomBetween(character.level - 2, character.level + 2);
   newEnemy.stat = new Stat();
-  newEnemy.stat.strength = randomBetween(newEnemy.level, newEnemy.level * 10);
-  newEnemy.stat.intelligence = randomBetween(
-    newEnemy.level,
-    newEnemy.level * 10,
+  newEnemy.stat.strength = randomBetween(
+    character.stat_id.strength - newEnemy.level,
+    character.stat_id.strength + newEnemy.level,
   );
-  newEnemy.stat.speed = randomBetween(newEnemy.level, newEnemy.level * 10);
-  newEnemy.stat.charisma = randomBetween(newEnemy.level, newEnemy.level * 10);
-  newEnemy.stat.health = randomBetween(newEnemy.level, newEnemy.level * 10);
-  newEnemy.stat.luck = randomBetween(newEnemy.level, newEnemy.level * 10);
+  newEnemy.stat.intelligence = randomBetween(
+    character.stat_id.intelligence - newEnemy.level,
+    character.stat_id.intelligence + newEnemy.level,
+  );
+  newEnemy.stat.speed = randomBetween(
+    character.stat_id.speed - newEnemy.level,
+    character.stat_id.speed + newEnemy.level,
+  );
+  newEnemy.stat.charisma = randomBetween(
+    character.stat_id.charisma - newEnemy.level,
+    character.stat_id.charisma + newEnemy.level,
+  );
+  newEnemy.stat.health = randomBetween(
+    character.stat_id.health - newEnemy.level,
+    character.stat_id.health + newEnemy.level,
+  );
+  newEnemy.stat.luck = randomBetween(
+    character.stat_id.luck - newEnemy.level,
+    character.stat_id.luck + newEnemy.level,
+  );
   return newEnemy;
 };
 

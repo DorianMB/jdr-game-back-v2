@@ -99,7 +99,7 @@ export class ItemsService {
       throw new NotFoundException('Loot table not found');
     }
 
-    if (!level) {
+    if (level === null) {
       level = Math.floor(Math.random() * 100);
     }
 

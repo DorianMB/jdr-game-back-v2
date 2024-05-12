@@ -77,7 +77,8 @@ export class CharactersService {
     character = convertEmptyStringToNull(character);
     character.money = character.money || 0;
     character.experience = character.experience || 0;
-    character.level = character.level || 0;
+    character.level =
+      character.level || getLevelByExperience(character.experience);
     character.bag_id = await this.bagService.create({ size: 5 });
     character.equipment_id = await this.equipmentsService.create({});
     character.stat_id = await this.statsService.create({
@@ -101,6 +102,7 @@ export class CharactersService {
   ): Promise<CharacterSendDto> {
     character = convertEmptyStringToNull(character);
     character.updated_at = new Date();
+    character.level = getLevelByExperience(character.experience);
     const updatedCharacter = await this.charactersRepository.save(character);
     return {
       ...updatedCharacter,
