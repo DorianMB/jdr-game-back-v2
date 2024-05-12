@@ -316,4 +316,21 @@ export class ItemsService {
     await this.equipmentRepository.save(equipment);
     return true;
   }
+
+  async testProbability(): Promise<any> {
+    const counts = {
+      common: 0,
+      uncommon: 0,
+      rare: 0,
+      epic: 0,
+      legendary: 0,
+    };
+
+    for (let i = 0; i < 1000; i++) {
+      const rarity = randomRarity('Legendary');
+      counts[rarity.toLowerCase()]++;
+    }
+
+    return counts;
+  }
 }

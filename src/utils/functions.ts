@@ -2,6 +2,7 @@ import {
   BASE_EXPERIENCE_BY_LEVEL,
   ENEMIES_LIST,
   RARITY_LIST,
+  RARITY_WEIGHTS,
 } from './constants';
 import { Enemy } from '../characters/dto/fight.dto';
 import { Stat } from '../entities/Stat';
@@ -52,10 +53,22 @@ export const lootTableStatMinMax = (): [number | null, number | null] => {
   }
 };
 
-export const randomRarity = (maxRarity): string => {
+export const randomRarity = (maxRarity: any): string => {
   const index = RARITY_LIST.findIndex((rarity) => rarity === maxRarity);
   const newRarityArray = RARITY_LIST.slice(0, index + 1);
-  return newRarityArray[Math.floor(Math.random() * newRarityArray.length)];
+  const newWeightsArray = RARITY_WEIGHTS.slice(0, index + 1);
+
+  const randomNum = Math.random();
+  let total = 0;
+
+  for (let i = 0; i < newWeightsArray.length; i++) {
+    total += newWeightsArray[i];
+    if (randomNum <= total) {
+      return newRarityArray[i];
+    }
+  }
+
+  return newRarityArray[0];
 };
 
 export const randomBetween = (min: number, max: number): number => {

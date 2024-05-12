@@ -3,6 +3,8 @@ export const LOOT_BASE_PICTURE =
 
 export const RARITY_LIST = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
 
+export const RARITY_WEIGHTS = [0.5, 0.25, 0.15, 0.07, 0.03];
+
 export const LOOT_TYPE_LIST = [
   'helmet',
   'chestplate',

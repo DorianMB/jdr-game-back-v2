@@ -49,6 +49,11 @@ export class ItemsController {
     return await this.itemsService.sellItem(info);
   }
 
+  @Get('/testProbability')
+  async testProbability(): Promise<any> {
+    return await this.itemsService.testProbability();
+  }
+
   //CRUD
 
   @Post()
