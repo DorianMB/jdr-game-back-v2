@@ -194,7 +194,6 @@ export const getLevelByExperience = (experience: number): number => {
   while (experience >= experienceRequired) {
     level++;
     experienceRequired += Math.floor(experienceRequired * 1.1);
-    console.log('level', level, experienceRequired);
   }
   return level;
 };

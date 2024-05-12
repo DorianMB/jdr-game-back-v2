@@ -81,7 +81,6 @@ export class ItemsService {
       updateItemDto.created_at = new Date();
     }
     updateItemDto.updated_at = new Date();
-    console.log(updateItemDto);
     return await this.itemRepository.save(updateItemDto);
   }
 
@@ -104,7 +103,7 @@ export class ItemsService {
       level = Math.floor(Math.random() * 100);
     }
 
-    const newItem = new Item();
+    let newItem = new Item();
 
     newItem.loot_id = lootTable;
     newItem.bag_id = null;
@@ -141,7 +140,10 @@ export class ItemsService {
     newItem.created_at = new Date();
     newItem.updated_at = new Date();
 
-    return await this.itemRepository.save(newItem);
+    newItem = await this.itemRepository.save(newItem);
+    newItem.loot_id = lootTable;
+    console.log(newItem);
+    return newItem;
   }
 
   async equipItem(info: EquipDto): Promise<boolean> {
@@ -198,9 +200,6 @@ export class ItemsService {
     } else {
       itemToUnequip = equipment[typeOfItem + '_id'];
       equipment[typeOfItem + '_id'] = item;
-      console.log('0', item);
-      console.log('1', equipment);
-      console.log('2', itemToUnequip);
     }
     if (itemToUnequip) {
       const itemToUnequipData = await this.itemRepository.findOne({
@@ -300,7 +299,6 @@ export class ItemsService {
         character_id: info.character_id,
       },
     });
-    console.log(item, bag, equipment, character);
     if (!item || !bag || !equipment || !character) {
       throw new NotFoundException(
         'Item, bag, equipment or character not found',

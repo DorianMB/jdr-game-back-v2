@@ -100,7 +100,6 @@ export class CharactersService {
     character: Partial<Character>,
   ): Promise<CharacterSendDto> {
     character = convertEmptyStringToNull(character);
-    console.log('ici2', character);
     character.updated_at = new Date();
     const updatedCharacter = await this.charactersRepository.save(character);
     return {
@@ -146,7 +145,9 @@ export class CharactersService {
       newUpdateItem.bag_id = character.bag_id.bag_id as Partial<Bag>;
       newUpdateItem.loot_id = treasure.loot_id
         .loot_table_id as Partial<LootTable>;
-      newFight.treasure = await this.itemsService.update(newUpdateItem);
+      const treasureUpdated = await this.itemsService.update(newUpdateItem);
+      treasureUpdated.loot_id = treasure.loot_id;
+      newFight.treasure = treasureUpdated;
       await this.patchCharacter(character);
     }
     return newFight;
