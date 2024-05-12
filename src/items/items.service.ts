@@ -89,7 +89,10 @@ export class ItemsService {
     await this.itemRepository.delete(id);
   }
 
-  async generateItemFromLootTable(lootTableId: number): Promise<Item> {
+  async generateItemFromLootTable(
+    lootTableId: number,
+    level?: number,
+  ): Promise<Item> {
     // récupération des données de la loot table
     const lootTable = await this.lootTablesService.findOne(lootTableId);
 
@@ -97,30 +100,32 @@ export class ItemsService {
       throw new NotFoundException('Loot table not found');
     }
 
+    if (!level) {
+      level = Math.floor(Math.random() * 100);
+    }
+
     const newItem = new Item();
 
     newItem.loot_id = lootTable;
     newItem.bag_id = null;
-    newItem.level = Math.floor(Math.random() * 100);
-    newItem.price = Math.floor(Math.random() * 100);
+    newItem.level = level;
+    newItem.price = Math.floor(Math.random() * 100) * level;
     newItem.rarity = randomRarity(lootTable.rarity);
 
     // set stats min and max
-    newItem.strength = randomBetween(
-      lootTable.strength_min,
-      lootTable.strength_max,
-    );
-    newItem.intelligence = randomBetween(
-      lootTable.intelligence_min,
-      lootTable.intelligence_max,
-    );
-    newItem.speed = randomBetween(lootTable.speed_min, lootTable.speed_max);
-    newItem.charisma = randomBetween(
-      lootTable.charisma_min,
-      lootTable.charisma_max,
-    );
-    newItem.health = randomBetween(lootTable.health_min, lootTable.health_max);
-    newItem.luck = randomBetween(lootTable.luck_min, lootTable.luck_max);
+    newItem.strength =
+      randomBetween(lootTable.strength_min, lootTable.strength_max) * level;
+    newItem.intelligence =
+      randomBetween(lootTable.intelligence_min, lootTable.intelligence_max) *
+      level;
+    newItem.speed =
+      randomBetween(lootTable.speed_min, lootTable.speed_max) * level;
+    newItem.charisma =
+      randomBetween(lootTable.charisma_min, lootTable.charisma_max) * level;
+    newItem.health =
+      randomBetween(lootTable.health_min, lootTable.health_max) * level;
+    newItem.luck =
+      randomBetween(lootTable.luck_min, lootTable.luck_max) * level;
     newItem.charm = lootTable.charm ? true : Math.random() > 0.5;
 
     //set charm
@@ -130,7 +135,7 @@ export class ItemsService {
         : CHARM_TYPE_LIST[Math.floor(Math.random() * CHARM_TYPE_LIST.length)];
       newItem.charm_value = lootTable.charm_value
         ? lootTable.charm_value
-        : Math.floor(Math.random() * 100);
+        : Math.floor(Math.random() * level);
     }
 
     newItem.created_at = new Date();
@@ -147,6 +152,16 @@ export class ItemsService {
       },
     });
     const equipment = await this.equipmentRepository.findOne({
+      relations: [
+        'helmet_id',
+        'chestplate_id',
+        'gloves_id',
+        'boots_id',
+        'primary_weapon_id',
+        'secondary_weapon_id',
+        'primary_magic_item_id',
+        'secondary_magic_item_id',
+      ],
       where: {
         equipment_id: info.equipment_id,
       },
@@ -183,6 +198,9 @@ export class ItemsService {
     } else {
       itemToUnequip = equipment[typeOfItem + '_id'];
       equipment[typeOfItem + '_id'] = item;
+      console.log('0', item);
+      console.log('1', equipment);
+      console.log('2', itemToUnequip);
     }
     if (itemToUnequip) {
       const itemToUnequipData = await this.itemRepository.findOne({

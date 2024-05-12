@@ -11,6 +11,7 @@ import { User } from '../entities/User';
 import { Equipment } from '../entities/Equipment';
 import {
   convertEmptyStringToNull,
+  getLevelByExperience,
   isVictory,
   randomEnemy,
   simulateRounds,
@@ -99,6 +100,7 @@ export class CharactersService {
     character: Partial<Character>,
   ): Promise<CharacterSendDto> {
     character = convertEmptyStringToNull(character);
+    console.log('ici2', character);
     character.updated_at = new Date();
     const updatedCharacter = await this.charactersRepository.save(character);
     return {
@@ -127,6 +129,13 @@ export class CharactersService {
     newFight.rounds = simulateRounds(character, newFight.enemy);
     newFight.isVictory = isVictory(newFight.rounds);
     if (newFight.isVictory) {
+      character.experience += newFight.enemy.level * 10;
+      const newLevel = getLevelByExperience(character.experience);
+      if (newLevel > character.level) {
+        character.experience_points = newLevel - character.level;
+        character.level = newLevel;
+      }
+
       const allLootTables = await this.lootTablesService.findAll();
       const treasure: Item = await this.itemsService.generateItemFromLootTable(
         allLootTables[Math.floor(Math.random() * allLootTables.length)]
@@ -138,6 +147,7 @@ export class CharactersService {
       newUpdateItem.loot_id = treasure.loot_id
         .loot_table_id as Partial<LootTable>;
       newFight.treasure = await this.itemsService.update(newUpdateItem);
+      await this.patchCharacter(character);
     }
     return newFight;
   }

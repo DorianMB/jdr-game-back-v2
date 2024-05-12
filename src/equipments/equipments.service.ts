@@ -66,7 +66,7 @@ export class EquipmentsService {
   }
 
   async findOne(id: number): Promise<SendEquipmentDto> {
-    const equipment = await this.equipmentRepository.findOne({
+    return await this.equipmentRepository.findOne({
       relations: [
         'helmet_id',
         'chestplate_id',
@@ -81,33 +81,6 @@ export class EquipmentsService {
         equipment_id: id,
       },
     });
-    return {
-      ...equipment,
-      helmet_id: equipment.helmet_id?.item_id
-        ? equipment.helmet_id?.item_id
-        : equipment.helmet_id,
-      chestplate_id: equipment.chestplate_id?.item_id
-        ? equipment.chestplate_id?.item_id
-        : equipment.chestplate_id,
-      gloves_id: equipment.gloves_id?.item_id
-        ? equipment.gloves_id?.item_id
-        : equipment.gloves_id,
-      boots_id: equipment.boots_id?.item_id
-        ? equipment.boots_id?.item_id
-        : equipment.boots_id,
-      primary_weapon_id: equipment.primary_weapon_id?.item_id
-        ? equipment.primary_weapon_id?.item_id
-        : equipment.primary_weapon_id,
-      secondary_weapon_id: equipment.secondary_weapon_id?.item_id
-        ? equipment.secondary_weapon_id?.item_id
-        : equipment.secondary_weapon_id,
-      primary_magic_item_id: equipment.primary_magic_item_id?.item_id
-        ? equipment.primary_magic_item_id?.item_id
-        : equipment.primary_magic_item_id,
-      secondary_magic_item_id: equipment.secondary_magic_item_id?.item_id
-        ? equipment.secondary_magic_item_id?.item_id
-        : equipment.secondary_magic_item_id,
-    };
   }
 
   async findOneCascade(id: number): Promise<SendEquipmentDto> {

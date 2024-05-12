@@ -43,6 +43,9 @@ export class Character {
   experience: number;
 
   @Column({ nullable: true })
+  experience_points: number;
+
+  @Column({ nullable: true })
   money: number;
 
   @Column({ nullable: true })

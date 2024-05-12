@@ -71,3 +71,5 @@ export const ENEMIES_LIST = [
       'https://www.belloflostsouls.net/wp-content/uploads/2021/10/oE6atKJ.png',
   },
 ];
+
+export const BASE_EXPERIENCE_BY_LEVEL = 200;
