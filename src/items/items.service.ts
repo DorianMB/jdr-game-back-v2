@@ -144,7 +144,6 @@ export class ItemsService {
 
     newItem = await this.itemRepository.save(newItem);
     newItem.loot_id = lootTable;
-    console.log(newItem);
     return newItem;
   }
 
