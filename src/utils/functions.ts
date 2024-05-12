@@ -198,7 +198,9 @@ export const getCumulativeStatFromEquipment = (
   ) {
     cumulative += equipment.secondary_magic_item_id[stat];
   }
-  return stat === 'health' ? cumulative / 2 : cumulative / 10;
+  return stat === 'health'
+    ? Math.floor(cumulative / 2)
+    : Math.floor(cumulative / 10);
 };
 
 export const getLevelByExperience = (experience: number): number => {

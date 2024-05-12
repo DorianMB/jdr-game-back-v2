@@ -108,23 +108,25 @@ export class ItemsService {
     newItem.loot_id = lootTable;
     newItem.bag_id = null;
     newItem.level = level;
-    newItem.price = Math.floor(Math.random() * 100) * level;
+    newItem.price = Math.floor(Math.random() * 100) * (level / 4);
     newItem.rarity = randomRarity(lootTable.rarity);
 
     // set stats min and max
     newItem.strength =
-      randomBetween(lootTable.strength_min, lootTable.strength_max) * level;
+      randomBetween(lootTable.strength_min, lootTable.strength_max) *
+      (level / 4);
     newItem.intelligence =
       randomBetween(lootTable.intelligence_min, lootTable.intelligence_max) *
       level;
     newItem.speed =
-      randomBetween(lootTable.speed_min, lootTable.speed_max) * level;
+      randomBetween(lootTable.speed_min, lootTable.speed_max) * (level / 4);
     newItem.charisma =
-      randomBetween(lootTable.charisma_min, lootTable.charisma_max) * level;
+      randomBetween(lootTable.charisma_min, lootTable.charisma_max) *
+      (level / 4);
     newItem.health =
-      randomBetween(lootTable.health_min, lootTable.health_max) * level;
+      randomBetween(lootTable.health_min, lootTable.health_max) * (level / 4);
     newItem.luck =
-      randomBetween(lootTable.luck_min, lootTable.luck_max) * level;
+      randomBetween(lootTable.luck_min, lootTable.luck_max) * (level / 4);
     newItem.charm = lootTable.charm ? true : Math.random() > 0.5;
 
     //set charm
