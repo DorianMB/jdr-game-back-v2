@@ -3,13 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { User } from './entities/User';
-import { Character } from './entities/Character';
-import { Equipment } from './entities/Equipment';
-import { Bag } from './entities/Bag';
-import { Item } from './entities/Items';
-import { LootTable } from './entities/LootTable';
-import { Stat } from './entities/Stat';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CharactersModule } from './characters/characters.module';
@@ -18,6 +11,7 @@ import { EquipmentsModule } from './equipments/equipments.module';
 import { StatsModule } from './stats/stats.module';
 import { LootTablesModule } from './loot-tables/loot-tables.module';
 import { ItemsModule } from './items/items.module';
+import { ENTITIES } from './utils/module.constants';
 
 @Module({
   imports: [
@@ -39,15 +33,7 @@ import { ItemsModule } from './items/items.module';
         synchronize: true,
       }),
     }),
-    TypeOrmModule.forFeature([
-      User,
-      Bag,
-      Item,
-      Equipment,
-      Character,
-      LootTable,
-      Stat,
-    ]),
+    ENTITIES,
     UsersModule,
     AuthModule,
     CharactersModule,
