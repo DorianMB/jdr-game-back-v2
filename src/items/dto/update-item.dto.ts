@@ -1,10 +1,13 @@
 import { Bag } from '../../entities/Bag';
 import { LootTable } from '../../entities/LootTable';
+import { Character } from '../../entities/Character';
 
 export class UpdateItemDto {
   item_id: number;
   loot_id: Partial<LootTable>;
   bag_id: Partial<Bag>;
+  owned: boolean;
+  in_shop: Partial<Character>;
   level: number;
   price: number;
   rarity: string;

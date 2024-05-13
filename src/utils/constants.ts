@@ -75,3 +75,13 @@ export const ENEMIES_LIST = [
 ];
 
 export const BASE_EXPERIENCE_BY_LEVEL = 200;
+
+export const BASE_PRICE_BY_RARIY = {
+  Common: 10,
+  Uncommon: 20,
+  Rare: 50,
+  Epic: 100,
+  Legendary: 200,
+};
+
+export const ITEM_IN_SHOP = 4;

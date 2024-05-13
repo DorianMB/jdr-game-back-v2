@@ -1,10 +1,13 @@
 import { LootTable } from '../../entities/LootTable';
 import { Bag } from '../../entities/Bag';
+import { Character } from '../../entities/Character';
 
 export class SendItemDto {
   item_id: number;
   loot_id: number | LootTable;
   bag_id: number | Bag;
+  owned: boolean;
+  in_shop: number | Character;
   level: number;
   price: number;
   rarity: string;

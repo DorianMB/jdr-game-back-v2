@@ -9,6 +9,7 @@ import {
 import { LootTable } from './LootTable';
 import { Bag } from './Bag';
 import { CHARM_TYPE_LIST, RARITY_LIST } from '../utils/constants';
+import { Character } from './Character';
 
 @Entity('items')
 export class Item {
@@ -22,6 +23,13 @@ export class Item {
   @ManyToOne(() => Bag, (bag) => bag.bag_id)
   @JoinColumn({ name: 'bag_id' })
   bag_id: Relation<Bag>;
+
+  @Column({ nullable: true })
+  owned: boolean;
+
+  @ManyToOne(() => Character, (character) => character.character_id)
+  @JoinColumn({ name: 'in_shop' })
+  in_shop: Character;
 
   @Column()
   level: number;

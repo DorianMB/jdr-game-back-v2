@@ -16,6 +16,7 @@ import { Item } from '../entities/Items';
 import { SendItemDto } from './dto/send-item.dto';
 import { EquipDto } from './dto/equip.dto';
 import { SellDto } from './dto/sell.dto';
+import { BuyDto } from './dto/buy.dto';
 
 @Controller('items')
 export class ItemsController {
@@ -47,6 +48,18 @@ export class ItemsController {
   @UseGuards(AuthGuard('jwt'))
   async sellItem(@Body() info: SellDto): Promise<boolean> {
     return await this.itemsService.sellItem(info);
+  }
+
+  @Patch('/buy')
+  @UseGuards(AuthGuard('jwt'))
+  async buyItem(@Body() info: BuyDto): Promise<boolean> {
+    return await this.itemsService.buyItem(info);
+  }
+
+  @Get('/shop/:id')
+  @UseGuards(AuthGuard('jwt'))
+  async shopList(@Param('id') id: string): Promise<Item[]> {
+    return await this.itemsService.shopList(+id);
   }
 
   @Get('/testProbability')

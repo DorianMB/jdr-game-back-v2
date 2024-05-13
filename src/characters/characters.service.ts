@@ -148,6 +148,7 @@ export class CharactersService {
       newUpdateItem.bag_id = character.bag_id.bag_id as Partial<Bag>;
       newUpdateItem.loot_id = treasure.loot_id
         .loot_table_id as Partial<LootTable>;
+      newUpdateItem.owned = true;
       const treasureUpdated = await this.itemsService.update(newUpdateItem);
       treasureUpdated.loot_id = treasure.loot_id;
       newFight.treasure = treasureUpdated;

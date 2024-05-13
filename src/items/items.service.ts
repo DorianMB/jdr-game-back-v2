@@ -3,7 +3,7 @@ import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Item } from '../entities/Items';
-import { Repository } from 'typeorm';
+import { IsNull, LessThan, Repository } from 'typeorm';
 import { SendItemDto } from './dto/send-item.dto';
 import {
   convertEmptyStringToNull,
@@ -12,7 +12,9 @@ import {
 } from '../utils/functions';
 import { LootTablesService } from '../loot-tables/loot-tables.service';
 import {
+  BASE_PRICE_BY_RARIY,
   CHARM_TYPE_LIST,
+  ITEM_IN_SHOP,
   PRIMARY_WEAPON_TYPE_LIST,
   SECONDARY_WEAPON_TYPE_LIST,
 } from '../utils/constants';
@@ -21,6 +23,7 @@ import { Bag } from '../entities/Bag';
 import { Equipment } from '../entities/Equipment';
 import { SellDto } from './dto/sell.dto';
 import { Character } from '../entities/Character';
+import { BuyDto } from './dto/buy.dto';
 
 @Injectable()
 export class ItemsService {
@@ -108,8 +111,14 @@ export class ItemsService {
     newItem.loot_id = lootTable;
     newItem.bag_id = null;
     newItem.level = level;
-    newItem.price = Math.floor(Math.random() * 100) * (level / 4);
     newItem.rarity = randomRarity(lootTable.rarity);
+    newItem.price =
+      Math.floor(Math.random() * BASE_PRICE_BY_RARIY[newItem.rarity]) *
+      (level / 4);
+
+    if (newItem.price <= 0) {
+      newItem.price = 1;
+    }
 
     // set stats min and max
     newItem.strength =
@@ -312,10 +321,101 @@ export class ItemsService {
     });
     character.money += item.price;
     item.bag_id = null;
+    item.owned = false;
     await this.characterRepository.save(character);
     await this.itemRepository.save(item);
     await this.equipmentRepository.save(equipment);
     return true;
+  }
+
+  async buyItem(info: BuyDto): Promise<boolean> {
+    const item = await this.itemRepository.findOne({
+      where: {
+        item_id: info.item_id,
+      },
+    });
+    const bag = await this.bagRepository.findOne({
+      where: {
+        bag_id: info.bag_id,
+      },
+    });
+    const character = await this.characterRepository.findOne({
+      where: {
+        character_id: info.character_id,
+      },
+    });
+    console.log(item, bag, character);
+    if (!item || !bag || !character) {
+      throw new NotFoundException('Item, bag or character not found');
+    }
+    if (item.in_shop === null) {
+      throw new NotFoundException('Item is not in the shop');
+    }
+    character.money -= item.price;
+    const updatedItem = { ...item } as UpdateItemDto;
+    updatedItem.bag_id = bag.bag_id as Partial<Bag>;
+    updatedItem.owned = true;
+    updatedItem.in_shop = null;
+    console.log(updatedItem);
+    await this.characterRepository.save(character);
+    await this.itemRepository.save(updatedItem);
+    return true;
+  }
+
+  async shopList(charactedId: number): Promise<Item[]> {
+    const character = await this.characterRepository.findOne({
+      where: {
+        character_id: charactedId,
+      },
+    });
+    const items = await this.itemRepository.find({
+      relations: ['in_shop'],
+      where: {
+        in_shop: {
+          character_id: charactedId,
+        },
+      },
+    });
+    if (items.length < ITEM_IN_SHOP || !items) {
+      const itemsNotOwned = await this.itemRepository.find({
+        relations: ['in_shop'],
+        where: {
+          owned: false,
+          in_shop: {
+            character_id: IsNull(),
+          },
+          level: LessThan(character.level + 1),
+        },
+      });
+      let randomItems = [...items];
+      if (itemsNotOwned.length > 0) {
+        if (itemsNotOwned.length < ITEM_IN_SHOP - items.length) {
+          randomItems = [...items, ...itemsNotOwned];
+        } else {
+          for (let i = randomItems.length || 0; i < ITEM_IN_SHOP; i++) {
+            randomItems.push(
+              itemsNotOwned[Math.floor(Math.random() * itemsNotOwned.length)],
+            );
+          }
+        }
+      }
+      const allLootTables = await this.lootTablesService.findAll();
+      for (let i = randomItems.length || 0; i < ITEM_IN_SHOP; i++) {
+        const item: Item = await this.generateItemFromLootTable(
+          allLootTables[Math.floor(Math.random() * allLootTables.length)]
+            .loot_table_id,
+          character.level,
+        );
+        randomItems.push(item);
+      }
+      for (const item of randomItems) {
+        item.in_shop = character;
+        await this.itemRepository.save(item);
+      }
+      return randomItems;
+    } else {
+      return items;
+    }
   }
 
   async testProbability(): Promise<any> {
