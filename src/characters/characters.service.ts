@@ -79,6 +79,7 @@ export class CharactersService {
     character.experience = character.experience || 0;
     character.level =
       character.level || getLevelByExperience(character.experience);
+    character.experience_points = character.experience_points || 0;
     character.bag_id = await this.bagService.create({ size: 5 });
     character.equipment_id = await this.equipmentsService.create({});
     character.stat_id = await this.statsService.create({
