@@ -105,6 +105,9 @@ export class ItemsService {
     if (level === null) {
       level = Math.floor(Math.random() * 100);
     }
+    if (level < 1) {
+      level = 1;
+    }
 
     let newItem = new Item();
 
@@ -144,7 +147,10 @@ export class ItemsService {
         ? lootTable.charm_type
         : CHARM_TYPE_LIST[Math.floor(Math.random() * CHARM_TYPE_LIST.length)];
       newItem.charm_value = lootTable.charm_value
-        ? lootTable.charm_value
+        ? randomBetween(
+            Math.floor(Math.random() * level),
+            lootTable.charm_value,
+          )
         : Math.floor(Math.random() * level);
     }
 
