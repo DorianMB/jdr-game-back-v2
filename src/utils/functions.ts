@@ -220,10 +220,15 @@ export const getCumulativeStatFromEquipment = (
 
 export const getLevelByExperience = (experience: number): number => {
   let level = 0;
+  let multiplier = 5;
   let experienceRequired = BASE_EXPERIENCE_BY_LEVEL;
   while (experience >= experienceRequired) {
     level++;
-    experienceRequired += Math.floor(experienceRequired * 1.1);
+    if (level % 10 === 0) {
+      multiplier += multiplier * 0.1;
+    }
+    experienceRequired += Math.floor(level * multiplier);
+    console.log(level, ' : ', experienceRequired, multiplier);
   }
   return level;
 };

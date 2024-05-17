@@ -12,7 +12,7 @@ import {
 } from '../utils/functions';
 import { LootTablesService } from '../loot-tables/loot-tables.service';
 import {
-  BASE_PRICE_BY_RARIY,
+  BASE_STAT_BY_RARIY,
   CHARM_TYPE_LIST,
   ITEM_IN_SHOP,
   PRIMARY_WEAPON_TYPE_LIST,
@@ -115,30 +115,44 @@ export class ItemsService {
     newItem.bag_id = null;
     newItem.level = level;
     newItem.rarity = randomRarity(lootTable.rarity);
-    newItem.price =
-      Math.floor(Math.random() * BASE_PRICE_BY_RARIY[newItem.rarity]) *
-      (level / 4);
-
-    if (newItem.price <= 0) {
-      newItem.price = 1;
-    }
 
     // set stats min and max
-    newItem.strength =
-      randomBetween(lootTable.strength_min, lootTable.strength_max) *
-      (level / 4);
-    newItem.intelligence =
-      randomBetween(lootTable.intelligence_min, lootTable.intelligence_max) *
-      level;
-    newItem.speed =
-      randomBetween(lootTable.speed_min, lootTable.speed_max) * (level / 4);
-    newItem.charisma =
-      randomBetween(lootTable.charisma_min, lootTable.charisma_max) *
-      (level / 4);
-    newItem.health =
-      randomBetween(lootTable.health_min, lootTable.health_max) * (level / 4);
-    newItem.luck =
-      randomBetween(lootTable.luck_min, lootTable.luck_max) * (level / 4);
+    newItem.strength = Math.floor(
+      (randomBetween(lootTable.strength_min, lootTable.strength_max) *
+        BASE_STAT_BY_RARIY[newItem.rarity] *
+        level) /
+        10,
+    );
+    newItem.intelligence = Math.floor(
+      (randomBetween(lootTable.intelligence_min, lootTable.intelligence_max) *
+        BASE_STAT_BY_RARIY[newItem.rarity] *
+        level) /
+        10,
+    );
+    newItem.speed = Math.floor(
+      (randomBetween(lootTable.speed_min, lootTable.speed_max) *
+        BASE_STAT_BY_RARIY[newItem.rarity] *
+        level) /
+        10,
+    );
+    newItem.charisma = Math.floor(
+      (randomBetween(lootTable.charisma_min, lootTable.charisma_max) *
+        BASE_STAT_BY_RARIY[newItem.rarity] *
+        level) /
+        10,
+    );
+    newItem.health = Math.floor(
+      (randomBetween(lootTable.health_min, lootTable.health_max) *
+        BASE_STAT_BY_RARIY[newItem.rarity] *
+        level) /
+        10,
+    );
+    newItem.luck = Math.floor(
+      (randomBetween(lootTable.luck_min, lootTable.luck_max) *
+        BASE_STAT_BY_RARIY[newItem.rarity] *
+        level) /
+        10,
+    );
     newItem.charm = lootTable.charm ? true : Math.random() > 0.5;
 
     //set charm
@@ -148,10 +162,29 @@ export class ItemsService {
         : CHARM_TYPE_LIST[Math.floor(Math.random() * CHARM_TYPE_LIST.length)];
       newItem.charm_value = lootTable.charm_value
         ? randomBetween(
-            Math.floor(Math.random() * level),
+            Math.floor(
+              Math.random() * BASE_STAT_BY_RARIY[newItem.rarity] * level,
+            ) / 10,
             lootTable.charm_value,
           )
-        : Math.floor(Math.random() * level);
+        : Math.floor(
+            Math.random() * BASE_STAT_BY_RARIY[newItem.rarity] * level,
+          ) / 10;
+    }
+
+    newItem.price = Math.floor(
+      // moyenne des stats
+      (newItem.strength +
+        newItem.intelligence +
+        newItem.speed +
+        newItem.charisma +
+        newItem.health +
+        newItem.luck) /
+        6,
+    );
+
+    if (newItem.price <= 0) {
+      newItem.price = 1;
     }
 
     newItem.created_at = new Date();

@@ -74,9 +74,9 @@ export const ENEMIES_LIST = [
   },
 ];
 
-export const BASE_EXPERIENCE_BY_LEVEL = 200;
+export const BASE_EXPERIENCE_BY_LEVEL = 10;
 
-export const BASE_PRICE_BY_RARIY = {
+export const BASE_STAT_BY_RARIY = {
   Common: 10,
   Uncommon: 20,
   Rare: 50,

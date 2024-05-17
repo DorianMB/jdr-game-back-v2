@@ -131,7 +131,8 @@ export class CharactersService {
     newFight.rounds = simulateRounds(character, newFight.enemy);
     newFight.isVictory = isVictory(newFight.rounds);
     if (newFight.isVictory) {
-      character.experience += newFight.enemy.level * 10;
+      character.experience +=
+        newFight.enemy.level === 0 ? 1 : newFight.enemy.level;
       const newLevel = getLevelByExperience(character.experience);
       if (newLevel > character.level) {
         character.experience_points = newLevel - character.level;
