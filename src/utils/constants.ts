@@ -1,6 +1,9 @@
 export const LOOT_BASE_PICTURE =
   'https://cdn.midjourney.com/c6dc1852-6979-4ff5-a033-64ca40a9d87b/0_0.png';
 
+export const HAND_PICTURE =
+  'https://png.pngtree.com/png-clipart/20230219/original/pngtree-fight-hand-png-image_8958805.png';
+
 export const RARITY_LIST = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
 
 export const RARITY_WEIGHTS = [0.5, 0.25, 0.15, 0.07, 0.03];

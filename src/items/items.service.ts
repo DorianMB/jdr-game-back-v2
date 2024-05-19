@@ -173,7 +173,6 @@ export class ItemsService {
     }
 
     newItem.price = Math.floor(
-      // moyenne des stats
       (newItem.strength +
         newItem.intelligence +
         newItem.speed +
@@ -383,7 +382,6 @@ export class ItemsService {
         character_id: info.character_id,
       },
     });
-    console.log(item, bag, character);
     if (!item || !bag || !character) {
       throw new NotFoundException('Item, bag or character not found');
     }
@@ -395,7 +393,6 @@ export class ItemsService {
     updatedItem.bag_id = bag.bag_id as Partial<Bag>;
     updatedItem.owned = true;
     updatedItem.in_shop = null;
-    console.log(updatedItem);
     await this.characterRepository.save(character);
     await this.itemRepository.save(updatedItem);
     return true;

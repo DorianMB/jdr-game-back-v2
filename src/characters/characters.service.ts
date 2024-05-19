@@ -22,6 +22,7 @@ import { Item } from '../entities/Items';
 import { Bag } from '../entities/Bag';
 import { LootTable } from '../entities/LootTable';
 import { UpdateItemDto } from '../items/dto/update-item.dto';
+import { HAND_PICTURE } from '../utils/constants';
 
 @Injectable()
 export class CharactersService {
@@ -127,6 +128,14 @@ export class CharactersService {
   async simulateFight(id: number): Promise<FightDto> {
     const character = await this.findCharacterById(id);
     const newFight = new FightDto();
+    newFight.characterWeapon = {} as any;
+    newFight.characterWeapon.picture = character.equipment_id.primary_weapon_id
+      ? character.equipment_id.primary_weapon_id.loot_id.fight_picture
+      : HAND_PICTURE;
+    newFight.characterWeapon.type = character.equipment_id.primary_weapon_id
+      ? character.equipment_id.primary_weapon_id.loot_id.type
+      : 'hand';
+    console.log(character);
     newFight.enemy = randomEnemy(character);
     newFight.rounds = simulateRounds(character, newFight.enemy);
     newFight.isVictory = isVictory(newFight.rounds);

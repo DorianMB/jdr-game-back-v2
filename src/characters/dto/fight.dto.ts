@@ -3,6 +3,10 @@ import { Stat } from '../../entities/Stat';
 
 export class FightDto {
   enemy: Enemy;
+  characterWeapon: {
+    type: string;
+    picture: string;
+  };
   rounds: any[];
   isVictory: boolean;
   treasure: Item;

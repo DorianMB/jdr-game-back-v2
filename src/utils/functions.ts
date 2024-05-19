@@ -228,7 +228,6 @@ export const getLevelByExperience = (experience: number): number => {
       multiplier += multiplier * 0.1;
     }
     experienceRequired += Math.floor(level * multiplier);
-    console.log(level, ' : ', experienceRequired, multiplier);
   }
   return level;
 };
