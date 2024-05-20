@@ -405,7 +405,7 @@ export class ItemsService {
       },
     });
     const items = await this.itemRepository.find({
-      relations: ['in_shop'],
+      relations: ['in_shop', 'loot_id'],
       where: {
         in_shop: {
           character_id: charactedId,
