@@ -16,6 +16,8 @@ export class Enemy {
   name: string;
   level: number;
   stat: Stat;
+  damage: number;
+  armor: number;
   picture: string;
   fight_picture: string;
 }

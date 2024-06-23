@@ -96,6 +96,14 @@ export const randomEnemy = (character: Character): Enemy => {
   newEnemy.picture = pickEnemy.picture;
   newEnemy.fight_picture = pickEnemy.fight_picture;
   newEnemy.level = randomBetween(character.level - 2, character.level + 2);
+  newEnemy.damage = randomBetween(
+    character.stat_id.strength - newEnemy.level,
+    character.stat_id.strength + newEnemy.level,
+  );
+  newEnemy.armor = randomBetween(
+    character.stat_id.intelligence - newEnemy.level,
+    character.stat_id.intelligence + newEnemy.level,
+  );
   newEnemy.stat = new Stat();
   newEnemy.stat.strength = randomBetween(
     character.stat_id.strength - newEnemy.level,
