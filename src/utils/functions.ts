@@ -38,18 +38,18 @@ export const lootTableStatMinMax = (): [number | null, number | null] => {
       return [num, num];
     case 1:
       const max1 = Math.floor(Math.random() * 100);
-      return [null, max1];
+      return [0, max1];
     case 2:
       const min2 = Math.floor(Math.random() * 100);
-      return [min2, null];
+      return [min2, 0];
     case 3:
       const min3 = Math.floor(Math.random() * 100);
       const max3 = Math.floor(min3 + Math.random() * 100);
       return [min3, max3];
     case 4:
-      return [null, null];
+      return [0, 0];
     default:
-      return [null, null];
+      return [0, 0];
   }
 };
 
@@ -74,6 +74,16 @@ export const randomRarity = (maxRarity: any): string => {
 export const randomBetween = (min: number, max: number): number => {
   if (min < 0) {
     min = 0;
+  }
+  if (min === null && max === null) {
+    return null;
+  } else {
+    if (min === null) {
+      min = 0;
+    }
+    if (max === null) {
+      max = min;
+    }
   }
   return Math.floor(min + Math.random() * (max - min));
 };

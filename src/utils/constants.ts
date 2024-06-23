@@ -44,7 +44,9 @@ export const STATS_TYPE_LIST = [
   'luck',
 ];
 
-export const LOOT_STATS_TYPE_LIST = [...STATS_TYPE_LIST, 'damage', 'armor'];
+export const ARMOR_STATS_TYPE_LIST = [...STATS_TYPE_LIST, 'armor'];
+
+export const WEAPON_STATS_TYPE_LIST = [...STATS_TYPE_LIST, 'damage'];
 
 export const ENEMIES_LIST = [
   {

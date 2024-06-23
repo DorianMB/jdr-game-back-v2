@@ -56,6 +56,12 @@ export class Item {
   health: number;
 
   @Column({ nullable: true })
+  armor: number;
+
+  @Column({ nullable: true })
+  damage: number;
+
+  @Column({ nullable: true })
   luck: number;
 
   @Column()

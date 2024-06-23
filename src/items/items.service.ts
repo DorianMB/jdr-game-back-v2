@@ -117,6 +117,18 @@ export class ItemsService {
     newItem.rarity = randomRarity(lootTable.rarity);
 
     // set stats min and max
+    newItem.damage = Math.floor(
+      (randomBetween(lootTable.damage_min, lootTable.damage_max) *
+        BASE_STAT_BY_RARIY[newItem.rarity] *
+        level) /
+        10,
+    );
+    newItem.armor = Math.floor(
+      (randomBetween(lootTable.armor_min, lootTable.armor_max) *
+        BASE_STAT_BY_RARIY[newItem.rarity] *
+        level) /
+        10,
+    );
     newItem.strength = Math.floor(
       (randomBetween(lootTable.strength_min, lootTable.strength_max) *
         BASE_STAT_BY_RARIY[newItem.rarity] *

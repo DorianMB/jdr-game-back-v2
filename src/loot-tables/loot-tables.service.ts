@@ -5,14 +5,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LootTable } from '../entities/LootTable';
 import { Repository } from 'typeorm';
 import {
+  ARMOR_STATS_TYPE_LIST,
   ARMOR_TYPE_LIST,
   CHARM_TYPE_LIST,
   LOOT_BASE_PICTURE,
-  LOOT_STATS_TYPE_LIST,
   LOOT_TYPE_LIST,
   PRIMARY_WEAPON_TYPE_LIST,
   RARITY_LIST,
   STATS_TYPE_LIST,
+  WEAPON_STATS_TYPE_LIST,
 } from '../utils/constants';
 import {
   convertEmptyStringToNull,
@@ -77,7 +78,13 @@ export class LootTablesService {
 
     // set stats min and max
     if (ARMOR_TYPE_LIST.includes(lootType)) {
-      LOOT_STATS_TYPE_LIST.forEach((stat) => {
+      ARMOR_STATS_TYPE_LIST.forEach((stat) => {
+        const res = lootTableStatMinMax();
+        lootTable[stat + '_min'] = res[0];
+        lootTable[stat + '_max'] = res[1];
+      });
+    } else if (PRIMARY_WEAPON_TYPE_LIST.includes(lootType)) {
+      WEAPON_STATS_TYPE_LIST.forEach((stat) => {
         const res = lootTableStatMinMax();
         lootTable[stat + '_min'] = res[0];
         lootTable[stat + '_max'] = res[1];
